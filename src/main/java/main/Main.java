@@ -37,14 +37,14 @@ public class Main {
         Servlet admin = new AdminServlet(accountService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(signin), "/signin");
-        context.addServlet(new ServletHolder(signUp), "/signup");
-        context.addServlet(new ServletHolder(profile), "/profile");
-        context.addServlet(new ServletHolder(admin), "/admin");
+        context.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
+        context.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
+        context.addServlet(new ServletHolder(profile), "/api/v1/auth/profile");
+        context.addServlet(new ServletHolder(admin), "/api/v1/auth/admin");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
-        resource_handler.setResourceBase("public_html"); //обработчик статических файлов
+        resource_handler.setResourceBase("public_html");
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resource_handler, context});
