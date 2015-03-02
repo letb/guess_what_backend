@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<b>Tip: after successful registration you will be redirected to login page.</b>
+<form action = "/signup" method = "POST">
+    <p> Name: <input type="text" name="name" /> </p>
+    <p> Password: <input type="password" name="password" /> </p>
+    <p> e-mail: <input type="text" name="email" /> </p>
+    <input type="submit" value="Submit">
+</form>
+<p>Sign up status: ${signUpStatus}</p>
+
+</body>
+</html>
