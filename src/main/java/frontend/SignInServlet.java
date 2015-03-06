@@ -28,7 +28,7 @@ public class SignInServlet extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         response.setStatus(HttpServletResponse.SC_OK);
         if(accountService.getSessions(request.getSession().getId()) != null ) {
-            response.sendRedirect("/profile");
+            response.sendRedirect("/api/v1/auth/profile");
         } else {
             pageVariables.put("signInStatus", "Time to login!");
             response.getWriter().println(PageGenerator.getPage("signin.html", pageVariables));
@@ -47,7 +47,7 @@ public class SignInServlet extends HttpServlet {
         if(userProfile != null) {
             if(password.contentEquals(userProfile.getPassword())) {
                 accountService.addSessions(request.getSession().getId(), userProfile);
-                response.sendRedirect("/profile");
+                response.sendRedirect("/api/v1/auth/profile");
             } else {
                 pageVariables.put("signInStatus", "Wrong password");
             }

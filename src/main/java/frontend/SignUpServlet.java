@@ -27,7 +27,7 @@ public class SignUpServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         if(accountService.getSessions(request.getSession().getId()) != null ) {
-            response.sendRedirect("/profile");
+            response.sendRedirect("/api/v1/auth/profile");
         } else {
             pageVariables.put("signUpStatus", "Let's try sign up!");
             response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
@@ -45,7 +45,7 @@ public class SignUpServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         if (accountService.addUser(name, new UserProfile(name, password, email))) {
-            response.sendRedirect("/signin");
+            response.sendRedirect("/api/v1/auth/signin");
         } else {
             pageVariables.put("signUpStatus", "User with name: " + name + " already exists");
             response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));

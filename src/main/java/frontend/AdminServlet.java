@@ -48,7 +48,7 @@ public class AdminServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(PageGenerator.getPage("admin.html", pageVariables));
             } else {
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

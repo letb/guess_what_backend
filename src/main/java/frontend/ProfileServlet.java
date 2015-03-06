@@ -2,6 +2,8 @@ package frontend;
 
 import main.AccountService;
 import main.UserProfile;
+
+import com.google.gson.JsonObject;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -30,13 +32,26 @@ public class ProfileServlet extends HttpServlet{
         response.setStatus(HttpServletResponse.SC_OK);
         UserProfile userProfile = accountService.getSessions(request.getSession().getId());
         if(userProfile == null ) {
-            response.sendRedirect("/signin");
+            response.sendRedirect("/api/v1/auth/signin");
         } else {
             String name = userProfile.getLogin();
             String email = userProfile.getEmail();
             pageVariables.put("name", name);
             pageVariables.put("email", email);
             response.getWriter().println(PageGenerator.getPage("profile.html", pageVariables));
+
+            JsonObject outerObject = new JsonObject();
+            JsonObject innerObject = new JsonObject();
+
+            innerObject.addProperty("id", "1");
+            innerObject.addProperty("name", name);
+            innerObject.addProperty("email", email);
+
+            outerObject.addProperty("status", "200");
+
+            outerObject.add("body", innerObject);
+
+            response.getWriter().println(outerObject.toString());
         }
     }
 
@@ -46,6 +61,6 @@ public class ProfileServlet extends HttpServlet{
         response.setStatus(HttpServletResponse.SC_OK);
 
         accountService.removeSessions(request.getSession().getId());
-        response.sendRedirect("/signin");
+        response.sendRedirect("/api/v1/auth/signin");
     }
 }
