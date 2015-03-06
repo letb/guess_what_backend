@@ -27,7 +27,7 @@ public class SignUpServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         if(accountService.getSessions(request.getSession().getId()) != null ) {
-            response.sendRedirect("/api/v1/auth/profile");
+            response.sendRedirect("/api/v1/profile");
         } else {
             pageVariables.put("signUpStatus", "Let's try sign up!");
             response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
