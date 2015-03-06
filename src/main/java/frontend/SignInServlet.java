@@ -31,7 +31,7 @@ public class SignInServlet extends HttpServlet {
             response.sendRedirect("/profile");
         } else {
             pageVariables.put("signInStatus", "Time to login!");
-            response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
+            response.getWriter().println(PageGenerator.getPage("signin.html", pageVariables));
         }
     }
 
