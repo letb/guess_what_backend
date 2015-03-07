@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author v.chibrikov
- */
+
 public class SignInServlet extends HttpServlet {
     private AccountService accountService;
 
