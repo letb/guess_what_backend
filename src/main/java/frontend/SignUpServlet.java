@@ -44,11 +44,16 @@ public class SignUpServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         Map<String, Object> pageVariables = new HashMap<>();
-        if (accountService.addUser(name, new UserProfile(name, password, email))) {
-            response.sendRedirect("/api/v1/auth/signin");
-        } else {
-            pageVariables.put("signUpStatus", "User with name: " + name + " already exists");
+        if(name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            pageVariables.put("signUpStatus", "All fields must be not empty! Try again");
             response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
+        } else {
+            if (accountService.addUser(name, new UserProfile(name, password, email))) {
+                response.sendRedirect("/api/v1/auth/signin");
+            } else {
+                pageVariables.put("signUpStatus", "User with name: " + name + " already exists");
+                response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
+            }
         }
 
     }
