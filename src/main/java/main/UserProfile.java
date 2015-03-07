@@ -2,9 +2,7 @@ package main;
 
 import com.google.gson.JsonObject;
 
-/**
- * Created by v.chibrikov on 13.09.2014.
- */
+
 public class UserProfile {
     private String login;
     private String password;
