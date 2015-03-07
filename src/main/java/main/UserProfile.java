@@ -30,9 +30,9 @@ public class UserProfile {
 
     public JsonObject getJson() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", "1");
+        jsonObject.addProperty("id", 1);
         jsonObject.addProperty("name", this.getLogin());
-        jsonObject.addProperty("email", this.getPassword());
+        jsonObject.addProperty("email", this.getEmail());
         return jsonObject;
     }
 }

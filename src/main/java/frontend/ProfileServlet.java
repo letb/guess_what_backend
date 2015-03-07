@@ -43,10 +43,10 @@ public class ProfileServlet extends HttpServlet{
 
             JsonResponse jsonResponse = new JsonResponse();
             JsonObject outerObject;
-            JsonObject innerObject;
+            JsonObject bodyObject;
 
-            innerObject = userProfile.getJson();
-            outerObject = jsonResponse.getJsonResponce(innerObject);
+            bodyObject = userProfile.getJson();
+            outerObject = jsonResponse.getJsonResponse(200, bodyObject);
 
             response.getWriter().println(outerObject.toString());
         }
