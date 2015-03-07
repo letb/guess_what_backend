@@ -41,12 +41,11 @@ public class ProfileServlet extends HttpServlet{
             pageVariables.put("email", email);
             response.getWriter().println(PageGenerator.getPage("profile.html", pageVariables));
 
-            JsonResponse jsonResponse = new JsonResponse();
             JsonObject outerObject;
             JsonObject bodyObject;
 
             bodyObject = userProfile.getJson();
-            outerObject = jsonResponse.getJsonResponse(200, bodyObject);
+            outerObject = JsonResponse.getJsonResponse(200, bodyObject);
 
             response.getWriter().println(outerObject.toString());
         }
