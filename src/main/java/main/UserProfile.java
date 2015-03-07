@@ -1,5 +1,7 @@
 package main;
 
+import com.google.gson.JsonObject;
+
 /**
  * Created by v.chibrikov on 13.09.2014.
  */
@@ -24,5 +26,13 @@ public class UserProfile {
 
     public String getEmail() {
         return email;
+    }
+
+    public JsonObject getJson() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", "1");
+        jsonObject.addProperty("name", this.getLogin());
+        jsonObject.addProperty("email", this.getPassword());
+        return jsonObject;
     }
 }

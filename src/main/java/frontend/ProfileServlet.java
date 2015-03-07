@@ -2,6 +2,7 @@ package frontend;
 
 import main.AccountService;
 import main.UserProfile;
+import main.JsonResponse;
 
 import com.google.gson.JsonObject;
 import templater.PageGenerator;
@@ -40,16 +41,12 @@ public class ProfileServlet extends HttpServlet{
             pageVariables.put("email", email);
             response.getWriter().println(PageGenerator.getPage("profile.html", pageVariables));
 
-            JsonObject outerObject = new JsonObject();
-            JsonObject innerObject = new JsonObject();
+            JsonResponse jsonResponse = new JsonResponse();
+            JsonObject outerObject;
+            JsonObject innerObject;
 
-            innerObject.addProperty("id", "1");
-            innerObject.addProperty("name", name);
-            innerObject.addProperty("email", email);
-
-            outerObject.addProperty("status", "200");
-
-            outerObject.add("body", innerObject);
+            innerObject = userProfile.getJson();
+            outerObject = jsonResponse.getJsonResponce(innerObject);
 
             response.getWriter().println(outerObject.toString());
         }
