@@ -22,7 +22,13 @@ public class Main {
         }
 
         String portString = args[0];
-        int port = Integer.valueOf(portString);
+        int port = 0;
+        try {
+            port = Integer.valueOf(portString);
+        } catch (NumberFormatException e) {
+            System.out.append("Use integer port as the first argument");
+            System.exit(2);
+        }
         System.out.append("Starting at port: ").append(portString).append('\n');
 
         AccountService accountService = new AccountService();

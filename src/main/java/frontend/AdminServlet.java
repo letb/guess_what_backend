@@ -34,17 +34,24 @@ public class AdminServlet extends HttpServlet{
             if (userProfile.getLogin().contentEquals("admin")) {
                 String timeString = request.getParameter("shutdown");
                 if (timeString != null) {
-                    int timeMS = Integer.valueOf(timeString);
-                    System.out.print("Server will be down after: " + timeMS + " ms");
-                    TimeHelper.sleep(timeMS);
-                    System.out.print("\nShutdown");
-                    System.exit(0);
+                    try {
+                        int timeMS = Integer.valueOf(timeString);
+                        System.out.print("Server will be down after: " + timeMS + " ms");
+                        TimeHelper.sleep(timeMS);
+                        System.out.print("\nShutdown");
+                        System.exit(0);
+                    } catch (NumberFormatException e) {
+                        pageVariables.put("shutdownStatus", "Use numbers to shutdown");
+                    }
                 }
 
                 String online = accountService.getNumberOfOnlineUsers();
                 String numberOfUsers = accountService.getNumberOfUsers();
                 pageVariables.put("online", online);
                 pageVariables.put("numberOfUsers", numberOfUsers);
+                if(!pageVariables.containsKey("shutdownStatus")) {
+                    pageVariables.put("shutdownStatus", "You can shutdown now");
+                }
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(PageGenerator.getPage("admin.html", pageVariables));
             } else {
