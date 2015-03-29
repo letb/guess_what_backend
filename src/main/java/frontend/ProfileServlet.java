@@ -1,6 +1,6 @@
 package frontend;
 
-import main.AccountService;
+import interfaces.AccountService;
 import main.UserProfile;
 import main.JsonResponse;
 

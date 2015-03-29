@@ -1,10 +1,12 @@
 package main;
 
+import interfaces.AccountService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class AccountService {
+public class AccountServiceImpl implements AccountService {
     private Map<String, UserProfile> users = new HashMap<>();
     private Map<String, UserProfile> sessions = new HashMap<>();
 

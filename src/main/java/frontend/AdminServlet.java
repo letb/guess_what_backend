@@ -1,7 +1,7 @@
 package frontend;
 
 import main.TimeHelper;
-import main.AccountService;
+import interfaces.AccountService;
 import main.UserProfile;
 import templater.PageGenerator;
 

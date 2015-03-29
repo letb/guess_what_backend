@@ -1,7 +1,7 @@
 package frontend;
 
 import com.google.gson.JsonObject;
-import main.AccountService;
+import interfaces.AccountService;
 import main.JsonResponse;
 import main.UserProfile;
 import templater.PageGenerator;
