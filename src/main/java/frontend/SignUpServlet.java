@@ -43,7 +43,6 @@ public class SignUpServlet extends HttpServlet {
 
         JsonObject bodyObject = new JsonObject();
         JsonObject outerObject;
-
         JsonObject messages = new JsonObject();
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -51,6 +50,7 @@ public class SignUpServlet extends HttpServlet {
             if (name.isEmpty()) messages.addProperty("login", "shouldn't be empty");
             if (email.isEmpty()) messages.addProperty("email", "shouldn't be empty");
             if (password.isEmpty()) messages.addProperty("password", "shouldn't be empty");
+            bodyObject.add("messages", messages);
             outerObject = JsonResponse.getJsonResponse(403, bodyObject);
         } else {
             if (accountService.addUser(name, new UserProfile(name, password, email))) {
@@ -61,6 +61,7 @@ public class SignUpServlet extends HttpServlet {
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 messages.addProperty("user", "already exist");
+                bodyObject.add("messages", messages);
                 outerObject = JsonResponse.getJsonResponse(401, bodyObject);
             }
         }

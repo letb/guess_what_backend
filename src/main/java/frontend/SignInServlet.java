@@ -54,11 +54,13 @@ public class SignInServlet extends HttpServlet {
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 messages.addProperty("user", "wrong login or password");
+                bodyObject.add("messages", messages);
                 outerObject = JsonResponse.getJsonResponse(401, bodyObject);
             }
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             messages.addProperty("user", "wrong login or password");
+            bodyObject.add("messages", messages);
             outerObject = JsonResponse.getJsonResponse(401, bodyObject);
         }
         response.setContentType("application/json");
