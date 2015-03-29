@@ -1,6 +1,8 @@
 package frontend;
 
+import com.google.gson.JsonObject;
 import main.AccountService;
+import main.JsonResponse;
 import main.UserProfile;
 import templater.PageGenerator;
 
@@ -38,22 +40,28 @@ public class SignInServlet extends HttpServlet {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        JsonObject bodyObject = new JsonObject();
+        JsonObject outerObject;
+        JsonObject messages = new JsonObject();
 
-        Map<String, Object> pageVariables = new HashMap<>();
         UserProfile userProfile = accountService.getUser(name);
         if(userProfile != null) {
             if(password.contentEquals(userProfile.getPassword())) {
                 accountService.addSessions(request.getSession().getId(), userProfile);
-                response.sendRedirect("/api/v1/profile");
+                response.setStatus(HttpServletResponse.SC_OK);
+                bodyObject = userProfile.getJson();
+                outerObject = JsonResponse.getJsonResponse(200, bodyObject);
             } else {
-                pageVariables.put("signInStatus", "Wrong password");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                messages.addProperty("user", "wrong login or password");
+                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
             }
         } else {
-            pageVariables.put("signInStatus", "Wrong login");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            messages.addProperty("user", "wrong login or password");
+            outerObject = JsonResponse.getJsonResponse(401, bodyObject);
         }
-
-
-        response.getWriter().println(PageGenerator.getPage("signin.html", pageVariables));
+        response.setContentType("application/json");
+        response.getWriter().write(outerObject.toString());
     }
 }
