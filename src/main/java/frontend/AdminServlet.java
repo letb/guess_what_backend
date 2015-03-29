@@ -1,9 +1,9 @@
 package frontend;
 
-import main.TimeHelper;
-import interfaces.AccountService;
+import utils.TimeHelper;
+import base.AccountService;
 import main.UserProfile;
-import templater.PageGenerator;
+import utils.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

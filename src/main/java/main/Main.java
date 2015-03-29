@@ -4,6 +4,7 @@ import frontend.SignInServlet;
 import frontend.SignUpServlet;
 import frontend.ProfileServlet;
 import frontend.AdminServlet;
+import base.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -31,7 +32,7 @@ public class Main {
         }
         System.out.append("Starting at port: ").append(portString).append('\n');
 
-        AccountServiceImpl accountService = new AccountServiceImpl();
+        AccountService accountService = new AccountServiceImpl();
         accountService.addUser("admin", new UserProfile("admin", "123", "admin@admin"));
         accountService.addUser("test", new UserProfile("test", "123", "test@test"));
 

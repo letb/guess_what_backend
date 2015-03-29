@@ -1,10 +1,10 @@
 package frontend;
 
 import com.google.gson.JsonObject;
-import interfaces.AccountService;
-import main.JsonResponse;
+import base.AccountService;
+import utils.JsonResponse;
 import main.UserProfile;
-import templater.PageGenerator;
+import utils.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
