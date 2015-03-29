@@ -1,8 +1,10 @@
 package frontend;
 
+import com.google.gson.JsonObject;
 import main.AccountService;
 import main.UserProfile;
 import templater.PageGenerator;
+import main.JsonResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +26,7 @@ public class SignUpServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        if(accountService.getSessions(request.getSession().getId()) != null ) {
+        if (accountService.getSessions(request.getSession().getId()) != null) {
             response.sendRedirect("/api/v1/profile");
         } else {
             pageVariables.put("signUpStatus", "Let's try sign up!");
@@ -39,21 +41,30 @@ public class SignUpServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        JsonObject bodyObject = new JsonObject();
+        JsonObject outerObject;
 
-        Map<String, Object> pageVariables = new HashMap<>();
-        if(name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            pageVariables.put("signUpStatus", "All fields must be not empty! Try again");
-            response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
+        JsonObject messages = new JsonObject();
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            if (name.isEmpty()) messages.addProperty("login", "shouldn't be empty");
+            if (email.isEmpty()) messages.addProperty("email", "shouldn't be empty");
+            if (password.isEmpty()) messages.addProperty("password", "shouldn't be empty");
+            outerObject = JsonResponse.getJsonResponse(403, bodyObject);
         } else {
             if (accountService.addUser(name, new UserProfile(name, password, email))) {
-                response.sendRedirect("/api/v1/auth/signin");
+                response.setStatus(HttpServletResponse.SC_CREATED);
+                UserProfile userProfile = accountService.getUser(name);
+                bodyObject = userProfile.getJson();
+                outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {
-                pageVariables.put("signUpStatus", "User with name: " + name + " already exists");
-                response.getWriter().println(PageGenerator.getPage("signup.html", pageVariables));
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                messages.addProperty("user", "already exist");
+                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
             }
         }
-
+        response.setContentType("application/json");
+        response.getWriter().write(outerObject.toString());
     }
-
 }
