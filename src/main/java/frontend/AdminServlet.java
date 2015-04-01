@@ -1,5 +1,7 @@
 package frontend;
 
+import com.google.gson.JsonObject;
+import utils.JsonResponse;
 import utils.TimeHelper;
 import base.AccountService;
 import main.UserProfile;
@@ -27,7 +29,9 @@ public class AdminServlet extends HttpServlet{
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
 
-        Map<String, Object> pageVariables = new HashMap<>();
+        JsonObject bodyObject = new JsonObject();
+        JsonObject outerObject;
+        JsonObject messages = new JsonObject();
 
         UserProfile userProfile = accountService.getSessions(request.getSession().getId());
         if(userProfile != null) {
@@ -41,24 +45,36 @@ public class AdminServlet extends HttpServlet{
                         System.out.print("\nShutdown");
                         System.exit(0);
                     } catch (NumberFormatException e) {
-                        pageVariables.put("shutdownStatus", "Use numbers to shutdown");
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        messages.addProperty("timer", "use numbers");
+                        bodyObject.add("messages", messages);
+                        outerObject = JsonResponse.getJsonResponse(400, bodyObject);
+                        response.setContentType("application/json");
+                        response.getWriter().write(outerObject.toString());
+                        return;
                     }
                 }
-
                 String online = accountService.getNumberOfOnlineUsers();
                 String numberOfUsers = accountService.getNumberOfUsers();
-                pageVariables.put("online", online);
-                pageVariables.put("numberOfUsers", numberOfUsers);
-                if(!pageVariables.containsKey("shutdownStatus")) {
-                    pageVariables.put("shutdownStatus", "You can shutdown now");
-                }
+
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println(PageGenerator.getPage("admin.html", pageVariables));
+                bodyObject.addProperty("number_of_users", numberOfUsers);
+                bodyObject.addProperty("online", online);
+                outerObject = JsonResponse.getJsonResponse(200, bodyObject);
+
             } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                messages.addProperty("user", "not admin");
+                bodyObject.add("messages", messages);
+                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
             }
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            messages.addProperty("user", "not admin");
+            bodyObject.add("messages", messages);
+            outerObject = JsonResponse.getJsonResponse(401, bodyObject);
         }
+        response.setContentType("application/json");
+        response.getWriter().write(outerObject.toString());
     }
 }
