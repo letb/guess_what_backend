@@ -2,7 +2,8 @@ package frontend;
 
 import com.google.gson.JsonObject;
 import base.AccountService;
-import main.UserProfile;
+import main.Context;
+import base.dataSets.UserDataSet;
 import utils.PageGenerator;
 import utils.JsonResponse;
 
@@ -20,6 +21,10 @@ public class SignUpServlet extends HttpServlet {
 
     public SignUpServlet(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    public SignUpServlet(Context context) {
+        this.accountService = (AccountService) context.get(AccountService.class);
     }
 
     public void doGet(HttpServletRequest request,
@@ -53,10 +58,10 @@ public class SignUpServlet extends HttpServlet {
             bodyObject.add("messages", messages);
             outerObject = JsonResponse.getJsonResponse(403, bodyObject);
         } else {
-            if (accountService.addUser(name, new UserProfile(name, password, email))) {
+            if (accountService.addUser(name, new UserDataSet(name, password, email))) {
                 response.setStatus(HttpServletResponse.SC_CREATED);
-                UserProfile userProfile = accountService.getUser(name);
-                bodyObject = userProfile.getJson();
+                UserDataSet userDataSet = accountService.getUser(name);
+                bodyObject = userDataSet.getJson();
                 outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {
                 outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,

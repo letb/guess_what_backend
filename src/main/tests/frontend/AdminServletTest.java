@@ -2,7 +2,7 @@ package tests.frontend;
 
 import base.AccountService;
 import frontend.AdminServlet;
-import main.UserProfile;
+import base.dataSets.UserDataSet;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +62,7 @@ public class AdminServletTest {
         HttpServletRequest request = getMockedRequest();
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("2");
-        when(accountService.getSessions("2")).thenReturn(new UserProfile("test", "123", "test@test"));
+        when(accountService.getSessions("2")).thenReturn(new UserDataSet("test", "123", "test@test"));
 
         String CorrectResponse = "{\"status\":401,\"body\":{\"messages\":{\"user\":\"not admin\"}}}";
 
@@ -80,7 +80,7 @@ public class AdminServletTest {
         HttpServletRequest request = getMockedRequest();
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("3");
-        when(accountService.getSessions("3")).thenReturn(new UserProfile("admin", "123", "admin@admin"));
+        when(accountService.getSessions("3")).thenReturn(new UserDataSet("admin", "123", "admin@admin"));
         when(accountService.getNumberOfOnlineUsers()).thenReturn("4");
         when(accountService.getNumberOfUsers()).thenReturn("20");
 
@@ -101,7 +101,7 @@ public class AdminServletTest {
         when(request.getSession()).thenReturn(httpSession);
         when(request.getParameter("shutdown")).thenReturn("q");
         when(httpSession.getId()).thenReturn("3");
-        when(accountService.getSessions("3")).thenReturn(new UserProfile("admin", "123", "admin@admin"));
+        when(accountService.getSessions("3")).thenReturn(new UserDataSet("admin", "123", "admin@admin"));
 
         String CorrectResponse = "{\"status\":400,\"body\":{\"messages\":{\"timer\":\"use numbers\"}}}";
 

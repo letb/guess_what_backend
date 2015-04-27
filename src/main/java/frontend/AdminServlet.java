@@ -1,19 +1,17 @@
 package frontend;
 
 import com.google.gson.JsonObject;
+import main.Context;
 import utils.JsonResponse;
 import utils.TimeHelper;
 import base.AccountService;
-import main.UserProfile;
-import utils.PageGenerator;
+import base.dataSets.UserDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by ivan on 01.03.15.
@@ -26,6 +24,10 @@ public class AdminServlet extends HttpServlet{
         this.accountService = accountService;
     }
 
+    public AdminServlet(Context context) {
+        this.accountService = (AccountService)context.get(AccountService.class);
+    }
+
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
 
@@ -33,9 +35,9 @@ public class AdminServlet extends HttpServlet{
         JsonObject outerObject;
         JsonObject messages = new JsonObject();
 
-        UserProfile userProfile = accountService.getSessions(request.getSession().getId());
-        if(userProfile != null) {
-            if (userProfile.getLogin().contentEquals("admin")) {
+        UserDataSet userDataSet = accountService.getSessions(request.getSession().getId());
+        if(userDataSet != null) {
+            if (userDataSet.getLogin().contentEquals("admin")) {
                 String timeString = request.getParameter("shutdown");
                 if (timeString != null) {
                     try {
@@ -62,11 +64,11 @@ public class AdminServlet extends HttpServlet{
 
             } else {
                 outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
-                        HttpServletResponse.SC_UNAUTHORIZED, "user", "not_admin");
+                        HttpServletResponse.SC_UNAUTHORIZED, "user", "not admin");
             }
         } else {
             outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
-                    HttpServletResponse.SC_UNAUTHORIZED, "user", "not_admin");
+                    HttpServletResponse.SC_UNAUTHORIZED, "user", "not admin");
         }
         response.setContentType("application/json");
         response.getWriter().write(outerObject.toString());

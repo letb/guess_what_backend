@@ -2,8 +2,9 @@ package frontend;
 
 import com.google.gson.JsonObject;
 import base.AccountService;
+import main.Context;
 import utils.JsonResponse;
-import main.UserProfile;
+import base.dataSets.UserDataSet;
 import utils.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -20,6 +21,10 @@ public class SignInServlet extends HttpServlet {
 
     public SignInServlet(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    public SignInServlet(Context context) {
+        this.accountService = (AccountService) context.get(AccountService.class);
     }
 
     public void doGet(HttpServletRequest request,
@@ -44,12 +49,12 @@ public class SignInServlet extends HttpServlet {
         JsonObject outerObject;
         JsonObject messages = new JsonObject();
 
-        UserProfile userProfile = accountService.getUser(name);
-        if(userProfile != null) {
-            if(password.contentEquals(userProfile.getPassword())) {
-                accountService.addSessions(request.getSession().getId(), userProfile);
+        UserDataSet userDataSet = accountService.getUser(name);
+        if(userDataSet != null) {
+            if(password.contentEquals(userDataSet.getPassword())) {
+                accountService.addSessions(request.getSession().getId(), userDataSet);
                 response.setStatus(HttpServletResponse.SC_OK);
-                bodyObject = userProfile.getJson();
+                bodyObject = userDataSet.getJson();
                 outerObject = JsonResponse.getJsonResponse(200, bodyObject);
             } else {
                 outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,

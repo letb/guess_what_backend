@@ -1,6 +1,7 @@
 package main;
 
-import chat.WebSocketChatServlet;
+import base.DBService;
+import dbService.DBServiceImpl;
 import frontend.SignInServlet;
 import frontend.SignUpServlet;
 import frontend.ProfileServlet;
@@ -33,34 +34,30 @@ public class Main {
         }
         System.out.append("Starting at port: ").append(portString).append('\n');
 
+        Context context = new Context();
         AccountService accountService = new AccountServiceImpl();
-        accountService.addUser("admin", new UserProfile("admin", "123", "admin@admin"));
-        accountService.addUser("test", new UserProfile("test", "123", "test@test"));
+        context.add(AccountService.class, accountService);
+        DBService dbService = new DBServiceImpl();
+        context.add(DBService.class, dbService);
 
-        Servlet signin = new SignInServlet(accountService);
-        Servlet signUp = new SignUpServlet(accountService);
-        Servlet profile = new ProfileServlet(accountService);
-        Servlet admin = new AdminServlet(accountService);
-        WebSocketChatServlet chat = new WebSocketChatServlet();
-        int[] arr =  new int[5];
-        String str = new String();
-        char[] ch = new char[5];
-        StringBuilder strb = new StringBuilder();
-        strb.
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
-        context.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
-        context.addServlet(new ServletHolder(profile), "/api/v1/profile");
-        context.addServlet(new ServletHolder(admin), "/api/v1/admin");
-        context.addServlet(new ServletHolder(chat), "/chat");
+        Servlet signin = new SignInServlet(context);
+        Servlet signUp = new SignUpServlet(context);
+        Servlet profile = new ProfileServlet(context);
+        Servlet admin = new AdminServlet(context);
+
+        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
+        servletContext.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
+        servletContext.addServlet(new ServletHolder(profile), "/api/v1/profile");
+        servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setResourceBase("public_html");
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{resource_handler, context});
+        handlers.setHandlers(new Handler[]{resource_handler, servletContext});
 
         Server server = new Server(port);
         server.setHandler(handlers);

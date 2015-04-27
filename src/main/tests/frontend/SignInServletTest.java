@@ -2,7 +2,7 @@ package tests.frontend;
 
 import base.AccountService;
 import frontend.SignInServlet;
-import main.UserProfile;
+import base.dataSets.UserDataSet;
 import org.junit.Test;
 import tests.classesForTests.AccountServiceStub;
 
@@ -67,7 +67,7 @@ public class SignInServletTest {
         HttpServletRequest request = getMockedRequest();
         when(request.getParameter("name")).thenReturn(name);
         when(request.getParameter("password")).thenReturn(password);
-        when(accountService.getUser("test")).thenReturn(new UserProfile(name, "456", email));
+        when(accountService.getUser("test")).thenReturn(new UserDataSet(name, "456", email));
         String CorrectResponse = "{\"status\":401,\"body\":" +
                 "{\"messages\":{\"user\":\"wrong login or password\"}}}";
 
