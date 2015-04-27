@@ -1,5 +1,6 @@
 package main;
 
+import chat.WebSocketChatServlet;
 import frontend.SignInServlet;
 import frontend.SignUpServlet;
 import frontend.ProfileServlet;
@@ -40,12 +41,19 @@ public class Main {
         Servlet signUp = new SignUpServlet(accountService);
         Servlet profile = new ProfileServlet(accountService);
         Servlet admin = new AdminServlet(accountService);
+        WebSocketChatServlet chat = new WebSocketChatServlet();
+        int[] arr =  new int[5];
+        String str = new String();
+        char[] ch = new char[5];
+        StringBuilder strb = new StringBuilder();
+        strb.
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
         context.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
         context.addServlet(new ServletHolder(profile), "/api/v1/profile");
         context.addServlet(new ServletHolder(admin), "/api/v1/admin");
+        context.addServlet(new ServletHolder(chat), "/chat");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);

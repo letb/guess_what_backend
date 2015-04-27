@@ -59,10 +59,8 @@ public class SignUpServlet extends HttpServlet {
                 bodyObject = userProfile.getJson();
                 outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                messages.addProperty("user", "already exist");
-                bodyObject.add("messages", messages);
-                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+                outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                        HttpServletResponse.SC_UNAUTHORIZED, "user", "already exist");
             }
         }
         response.setContentType("application/json");

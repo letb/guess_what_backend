@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
+
 /**
  * Created by ivan on 01.03.15.
  */
@@ -34,11 +35,8 @@ public class ProfileServlet extends HttpServlet{
         JsonObject bodyObject = new JsonObject();
         JsonObject messages = new JsonObject();
         if(userProfile == null ) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            messages.addProperty("user", "not authorized");
-            bodyObject.add("messages", messages);
-            outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+            outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                    HttpServletResponse.SC_UNAUTHORIZED, "user", "not authorized");
 
         } else {
             response.setStatus(HttpServletResponse.SC_OK);

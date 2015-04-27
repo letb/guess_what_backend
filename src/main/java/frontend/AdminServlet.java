@@ -45,10 +45,8 @@ public class AdminServlet extends HttpServlet{
                         System.out.print("\nShutdown");
                         System.exit(0);
                     } catch (NumberFormatException e) {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        messages.addProperty("timer", "use numbers");
-                        bodyObject.add("messages", messages);
-                        outerObject = JsonResponse.getJsonResponse(400, bodyObject);
+                        outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                                HttpServletResponse.SC_BAD_REQUEST, "timer", "use numbers");
                         response.setContentType("application/json");
                         response.getWriter().write(outerObject.toString());
                         return;
@@ -60,19 +58,15 @@ public class AdminServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_OK);
                 bodyObject.addProperty("number_of_users", numberOfUsers);
                 bodyObject.addProperty("online", online);
-                outerObject = JsonResponse.getJsonResponse(200, bodyObject);
+                outerObject = JsonResponse.getJsonResponse(HttpServletResponse.SC_OK, bodyObject);
 
             } else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                messages.addProperty("user", "not admin");
-                bodyObject.add("messages", messages);
-                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+                outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                        HttpServletResponse.SC_UNAUTHORIZED, "user", "not_admin");
             }
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            messages.addProperty("user", "not admin");
-            bodyObject.add("messages", messages);
-            outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+            outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                    HttpServletResponse.SC_UNAUTHORIZED, "user", "not_admin");
         }
         response.setContentType("application/json");
         response.getWriter().write(outerObject.toString());

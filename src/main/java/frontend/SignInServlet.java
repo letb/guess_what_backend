@@ -52,10 +52,8 @@ public class SignInServlet extends HttpServlet {
                 bodyObject = userProfile.getJson();
                 outerObject = JsonResponse.getJsonResponse(200, bodyObject);
             } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                messages.addProperty("user", "wrong login or password");
-                bodyObject.add("messages", messages);
-                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+                outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                        HttpServletResponse.SC_UNAUTHORIZED, "user", "wrong login or password");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
