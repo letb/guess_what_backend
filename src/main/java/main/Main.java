@@ -2,10 +2,7 @@ package main;
 
 import base.DBService;
 import dbService.DBServiceImpl;
-import frontend.SignInServlet;
-import frontend.SignUpServlet;
-import frontend.ProfileServlet;
-import frontend.AdminServlet;
+import frontend.*;
 import base.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -45,12 +42,14 @@ public class Main {
         Servlet signUp = new SignUpServlet(context);
         Servlet profile = new ProfileServlet(context);
         Servlet admin = new AdminServlet(context);
+        Servlet game = new WebSocketGameServlet(context);
 
         ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
         servletContext.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
         servletContext.addServlet(new ServletHolder(profile), "/api/v1/profile");
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
+        servletContext.addServlet(new ServletHolder(game), "/game");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);

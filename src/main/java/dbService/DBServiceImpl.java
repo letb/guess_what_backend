@@ -3,6 +3,8 @@ package dbService;
 import base.DBService;
 import base.dataSets.UserDataSet;
 import dbService.dao.UserDataSetDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,10 +17,12 @@ import org.hibernate.service.ServiceRegistry;
  */
 public class DBServiceImpl implements DBService {
    private SessionFactory sessionFactory;
+   static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
 
     public DBServiceImpl() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
+
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
@@ -28,6 +32,7 @@ public class DBServiceImpl implements DBService {
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
 
+        logger.info("Database service configured");
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -37,6 +42,7 @@ public class DBServiceImpl implements DBService {
         UserDataSetDAO dao = new UserDataSetDAO(session);
         dao.save(dataSet);
         transaction.commit();
+        logger.info("Session created");
     }
 
     public UserDataSet readByLogin(String login) {
