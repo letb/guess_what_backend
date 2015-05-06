@@ -11,6 +11,8 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import resource.DBSettings;
+import resource.ResourceFactory;
 
 /**
  * Created by ivan on 27.04.15.
@@ -20,17 +22,14 @@ public class DBServiceImpl implements DBService {
    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
 
     public DBServiceImpl() {
-        Configuration configuration = new Configuration();
+        ResourceFactory resourceFactory = ResourceFactory.instance();
+        DBSettings dbSettings = (DBSettings)resourceFactory.getResource("dbSettings");
+        if(dbSettings == null) {
+            System.out.printf("No db settings. I give up");
+            System.exit(3);
+        }
+        Configuration configuration = dbSettings.getConfiguration();
         configuration.addAnnotatedClass(UserDataSet.class);
-
-
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/java_db");
-        configuration.setProperty("hibernate.connection.username", "g03");
-        configuration.setProperty("hibernate.connection.password", "g037606");
-        configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
 
         logger.info("Database service configured");
         sessionFactory = createSessionFactory(configuration);

@@ -1,0 +1,9 @@
+<class type='resource.DBSettings'>
+    <dialect>org.hibernate.dialect.PostgreSQLDialect</dialect>
+    <driverClass>org.postgresql.Driver</driverClass>
+    <url>jdbc:postgresql://localhost:5432/java_db</url>
+    <name>g03</name>
+    <password>g037606</password>
+    <show>true</show>
+    <auto>validate</auto>
+</class>
