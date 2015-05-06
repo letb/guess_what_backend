@@ -10,26 +10,21 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import resource.ResourceFactory;
+import resource.ServerSettings;
 
 import javax.servlet.Servlet;
 
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.out.append("Use port as the first argument");
-            System.exit(1);
+        ResourceFactory resourceFactory = ResourceFactory.instance();
+        ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("serverSettings");
+        if(serverSettings == null) {
+            serverSettings = new ServerSettings();
         }
-
-        String portString = args[0];
-        int port = 0;
-        try {
-            port = Integer.valueOf(portString);
-        } catch (NumberFormatException e) {
-            System.out.append("Use integer port as the first argument");
-            System.exit(2);
-        }
-        System.out.append("Starting at port: ").append(portString).append('\n');
+        int port = serverSettings.getPort();
+        System.out.append("Starting at port: ").append("" + port).append('\n');
 
         Context context = new Context();
         AccountService accountService = new AccountServiceImpl();
