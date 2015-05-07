@@ -16,7 +16,7 @@ public class UserDataSet implements Serializable {
     private int id;
 
     @Column(name = "login")
-    private String login;
+    private String name;
 
     @Column(name = "password")
     private String password;
@@ -30,9 +30,9 @@ public class UserDataSet implements Serializable {
     public UserDataSet() {
     }
 
-    public UserDataSet(String login, String password, String email) {
+    public UserDataSet(String name, String password, String email) {
         this.setId(-1);
-        this.setLogin(login);
+        this.setName(name);
         this.setPassword(password);
         this.setEmail(email);
         this.setScore(0);
@@ -42,8 +42,8 @@ public class UserDataSet implements Serializable {
         return id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {
@@ -63,8 +63,8 @@ public class UserDataSet implements Serializable {
         this.id = id;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = this.name;
     }
 
     public void setPassword(String password) {
@@ -82,7 +82,7 @@ public class UserDataSet implements Serializable {
     public JsonObject getJson() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", 1);
-        jsonObject.addProperty("name", this.getLogin());
+        jsonObject.addProperty("login", this.getName());
         jsonObject.addProperty("email", this.getEmail());
         return jsonObject;
     }

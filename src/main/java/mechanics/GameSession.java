@@ -13,7 +13,7 @@ public class GameSession {
 
     private Map<String, GameUser> users = new HashMap<>();
 
-    private GameSession(String user1, String user2) {
+    public GameSession(String user1, String user2) {
         startTime = new Date().getTime();
         GameUser gameUser1 = new GameUser(user1);
         gameUser1.setEnemyName(user2);

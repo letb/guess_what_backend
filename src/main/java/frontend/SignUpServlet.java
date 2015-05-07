@@ -52,7 +52,7 @@ public class SignUpServlet extends HttpServlet {
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            if (name.isEmpty()) messages.addProperty("login", "shouldn't be empty");
+            if (name.isEmpty()) messages.addProperty("name", "shouldn't be empty");
             if (email.isEmpty()) messages.addProperty("email", "shouldn't be empty");
             if (password.isEmpty()) messages.addProperty("password", "shouldn't be empty");
             bodyObject.add("messages", messages);

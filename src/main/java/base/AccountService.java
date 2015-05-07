@@ -8,10 +8,18 @@ import base.dataSets.UserDataSet;
 
 public interface AccountService {
     boolean addUser(String userName, UserDataSet userDataSet);
-    void addSessions(String sessionId, UserDataSet userDataSet);
+
+    void addSession(String sessionId, UserDataSet userDataSet);
+
     UserDataSet getUser(String userName);
+
+    String getUserName(String sessionId);
+
     UserDataSet getSessions(String sessionId);
+
     UserDataSet removeSessions(String sessionId);
+
     String getNumberOfOnlineUsers();
+
     String getNumberOfUsers();
 }

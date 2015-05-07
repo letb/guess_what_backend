@@ -22,6 +22,6 @@ public class UserDataSetDAO {
 
     public UserDataSet readByLogin(String login) {
         Criteria criteria = session.createCriteria(UserDataSet.class);
-        return (UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult();
+        return (UserDataSet) criteria.add(Restrictions.eq("name", login)).uniqueResult();
     }
 }
