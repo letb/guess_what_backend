@@ -31,10 +31,7 @@ public class GameServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         response.setStatus(HttpServletResponse.SC_OK);
-        if(accountService.getSessions(request.getSession().getId()) != null ) {
-            pageVariables.put("myName", accountService.getUserName(request.getSession().getId()));
-            response.getWriter().println(PageGenerator.getPage("game.html", pageVariables));
-        } else {
+        if(accountService.getSessions(request.getSession().getId()) == null ) {
             pageVariables.put("signInStatus", "Time to login!");
             response.getWriter().println(PageGenerator.getPage("index.html", pageVariables));
         }

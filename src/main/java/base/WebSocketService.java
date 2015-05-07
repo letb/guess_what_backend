@@ -8,6 +8,7 @@ public interface WebSocketService {
     void addUser(GameWebSocket user);
 
 //    void notifyUserRightAnswer(GameUser user);
+    GameWebSocket getUserByName(String name);
 
     void notifyStartGame(GameUser user);
 

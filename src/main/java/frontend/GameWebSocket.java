@@ -3,14 +3,12 @@ package frontend;
 import base.GameMechanics;
 import base.GameUser;
 import base.WebSocketService;
-import com.google.gson.JsonObject;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -21,8 +19,8 @@ public class GameWebSocket {
     static final Logger logger = LogManager.getLogger(GameWebSocket.class);
 //    private Set<GameWebSocket> users;
     private String myName;
+    private String enemyName;
     private boolean isLeader;
-    private GameWebSocket enemyUser;
     private Session session;
     private GameMechanics gameMechanics;
     private WebSocketService webSocketService;
@@ -41,8 +39,9 @@ public class GameWebSocket {
     public void startGame(GameUser user) {
         try {
             JSONObject jsonStart = new JSONObject();
+            enemyName = user.getEnemyName();
             jsonStart.put("status", "start");
-            jsonStart.put("enemyName", user.getEnemyName());
+            jsonStart.put("enemyName", enemyName);
             session.getRemote().sendString(jsonStart.toJSONString());
         } catch (Exception e) {
             logger.catching(e);
@@ -69,10 +68,10 @@ public class GameWebSocket {
 
     @OnWebSocketMessage
     public void onMessage(String data) {
-        JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("message", data);
         try {
-            session.getRemote().sendString(jsonMessage.toJSONString());
+            logger.info(data);
+            session.getRemote().sendString(data);
+            webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
         } catch (Exception e) {
             logger.catching(e);
         }
