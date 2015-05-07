@@ -22,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
         return true;
     }
 
-    public void addSessions(String sessionId, UserDataSet userDataSet) {
+    public void addSession(String sessionId, UserDataSet userDataSet) {
         sessions.put(sessionId, userDataSet);
     }
 
@@ -39,6 +39,10 @@ public class AccountServiceImpl implements AccountService {
 
     public UserDataSet getSessions(String sessionId) {
         return sessions.get(sessionId);
+    }
+
+    public String getUserName(String sessionId) {
+        return sessions.get(sessionId).getName();
     }
 
     public UserDataSet removeSessions(String sessionId) { return sessions.remove(sessionId); }

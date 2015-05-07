@@ -37,7 +37,7 @@ public class AdminServlet extends HttpServlet{
 
         UserDataSet userDataSet = accountService.getSessions(request.getSession().getId());
         if(userDataSet != null) {
-            if (userDataSet.getLogin().contentEquals("admin")) {
+            if (userDataSet.getName().contentEquals("admin")) {
                 String timeString = request.getParameter("shutdown");
                 if (timeString != null) {
                     try {
