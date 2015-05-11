@@ -27,3 +27,6 @@ release.properties
 .vagrant/
 
 *~
+
+data/dbSettings.xml
+data/serverSettings.xml
