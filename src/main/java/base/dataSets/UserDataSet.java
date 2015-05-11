@@ -64,7 +64,7 @@ public class UserDataSet implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = this.name;
+        this.name = name;
     }
 
     public void setPassword(String password) {
