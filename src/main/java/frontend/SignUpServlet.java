@@ -2,7 +2,8 @@ package frontend;
 
 import com.google.gson.JsonObject;
 import base.AccountService;
-import main.UserProfile;
+import main.Context;
+import base.dataSets.UserDataSet;
 import utils.PageGenerator;
 import utils.JsonResponse;
 
@@ -20,6 +21,10 @@ public class SignUpServlet extends HttpServlet {
 
     public SignUpServlet(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    public SignUpServlet(Context context) {
+        this.accountService = (AccountService) context.get(AccountService.class);
     }
 
     public void doGet(HttpServletRequest request,
@@ -47,22 +52,20 @@ public class SignUpServlet extends HttpServlet {
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            if (name.isEmpty()) messages.addProperty("login", "shouldn't be empty");
+            if (name.isEmpty()) messages.addProperty("name", "shouldn't be empty");
             if (email.isEmpty()) messages.addProperty("email", "shouldn't be empty");
             if (password.isEmpty()) messages.addProperty("password", "shouldn't be empty");
             bodyObject.add("messages", messages);
             outerObject = JsonResponse.getJsonResponse(403, bodyObject);
         } else {
-            if (accountService.addUser(name, new UserProfile(name, password, email))) {
+            if (accountService.addUser(name, new UserDataSet(name, password, email))) {
                 response.setStatus(HttpServletResponse.SC_CREATED);
-                UserProfile userProfile = accountService.getUser(name);
-                bodyObject = userProfile.getJson();
+                UserDataSet userDataSet = accountService.getUser(name);
+                bodyObject = userDataSet.getJson();
                 outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                messages.addProperty("user", "already exist");
-                bodyObject.add("messages", messages);
-                outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+                outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                        HttpServletResponse.SC_UNAUTHORIZED, "user", "already exist");
             }
         }
         response.setContentType("application/json");

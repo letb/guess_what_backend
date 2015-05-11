@@ -12,6 +12,9 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
+### Log4j ###
+*.log
+
 ### Java ###
 *.class
 
@@ -24,3 +27,6 @@ release.properties
 .vagrant/
 
 *~
+
+data/dbSettings.xml
+data/serverSettings.xml

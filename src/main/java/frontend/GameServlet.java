@@ -1,10 +1,11 @@
 package frontend;
 
-import com.google.gson.JsonObject;
 import base.AccountService;
+import base.GameMechanics;
+import base.dataSets.UserDataSet;
+import com.google.gson.JsonObject;
 import main.Context;
 import utils.JsonResponse;
-import base.dataSets.UserDataSet;
 import utils.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -15,15 +16,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+public class GameServlet extends HttpServlet {
 
-public class SignInServlet extends HttpServlet {
+    private GameMechanics gameMechanics;
     private AccountService accountService;
 
-    public SignInServlet(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
-    public SignInServlet(Context context) {
+    public GameServlet(Context context) {
+        this.gameMechanics = (GameMechanics)context.get(GameMechanics.class);
         this.accountService = (AccountService)context.get(AccountService.class);
     }
 
@@ -32,11 +31,9 @@ public class SignInServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         response.setStatus(HttpServletResponse.SC_OK);
-        if(accountService.getSessions(request.getSession().getId()) != null ) {
-            response.sendRedirect("/api/v1/profile");
-        } else {
+        if(accountService.getSessions(request.getSession().getId()) == null ) {
             pageVariables.put("signInStatus", "Time to login!");
-            response.getWriter().println(PageGenerator.getPage("signin.html", pageVariables));
+            response.getWriter().println(PageGenerator.getPage("index.html", pageVariables));
         }
     }
 
@@ -44,6 +41,7 @@ public class SignInServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
+        Map<String, Object> pageVariables = new HashMap<>();
 
         JsonObject bodyObject = new JsonObject();
         JsonObject outerObject;
@@ -55,6 +53,7 @@ public class SignInServlet extends HttpServlet {
                 accountService.addSession(request.getSession().getId(), userDataSet);
                 response.setStatus(HttpServletResponse.SC_OK);
                 bodyObject = userDataSet.getJson();
+                pageVariables.put("myName", userDataSet.getName());
                 outerObject = JsonResponse.getJsonResponse(200, bodyObject);
             } else {
                 outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
@@ -66,7 +65,7 @@ public class SignInServlet extends HttpServlet {
             bodyObject.add("messages", messages);
             outerObject = JsonResponse.getJsonResponse(401, bodyObject);
         }
-        response.setContentType("application/json");
-        response.getWriter().write(outerObject.toString());
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(PageGenerator.getPage("game.html", pageVariables));
     }
 }

@@ -1,7 +1,8 @@
 package frontend;
 
 import base.AccountService;
-import main.UserProfile;
+import main.Context;
+import base.dataSets.UserDataSet;
 import utils.JsonResponse;
 
 import com.google.gson.JsonObject;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 
 
 /**
@@ -24,26 +26,27 @@ public class ProfileServlet extends HttpServlet{
         this.accountService = accountService;
     }
 
+    public ProfileServlet(Context context) {
+        this.accountService = (AccountService)context.get(AccountService.class);
+    }
+
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
 
 
-        UserProfile userProfile = accountService.getSessions(request.getSession().getId());
+        UserDataSet userDataSet = accountService.getSessions(request.getSession().getId());
 
         JsonObject outerObject;
         JsonObject bodyObject = new JsonObject();
         JsonObject messages = new JsonObject();
-        if(userProfile == null ) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            messages.addProperty("user", "not authorized");
-            bodyObject.add("messages", messages);
-            outerObject = JsonResponse.getJsonResponse(401, bodyObject);
+        if(userDataSet == null ) {
+            outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,
+                    HttpServletResponse.SC_UNAUTHORIZED, "user", "not authorized");
 
         } else {
             response.setStatus(HttpServletResponse.SC_OK);
 
-            bodyObject = userProfile.getJson();
+            bodyObject = userDataSet.getJson();
             outerObject = JsonResponse.getJsonResponse(200, bodyObject);
 
         }

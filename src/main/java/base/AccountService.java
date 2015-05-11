@@ -1,16 +1,25 @@
 package base;
 
-import main.UserProfile;
+import base.dataSets.UserDataSet;
 
 /**
  * Created by ivan on 29.03.15.
  */
+
 public interface AccountService {
-    boolean addUser(String userName, UserProfile userProfile);
-    void addSessions(String sessionId, UserProfile userProfile);
-    UserProfile getUser(String userName);
-    UserProfile getSessions(String sessionId);
-    UserProfile removeSessions(String sessionId);
+    boolean addUser(String userName, UserDataSet userDataSet);
+
+    void addSession(String sessionId, UserDataSet userDataSet);
+
+    UserDataSet getUser(String userName);
+
+    String getUserName(String sessionId);
+
+    UserDataSet getSessions(String sessionId);
+
+    UserDataSet removeSessions(String sessionId);
+
     String getNumberOfOnlineUsers();
+
     String getNumberOfUsers();
 }
