@@ -46,6 +46,7 @@ public class Main {
         Servlet admin = new AdminServlet(context);
         Servlet gameplay = new WebSocketGameServlet(context);
         Servlet game = new GameServlet(context);
+        Servlet front = new FrontServlet(context);
 
         ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
@@ -54,6 +55,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
         servletContext.addServlet(new ServletHolder(game), "/game.html");
+        servletContext.addServlet(new ServletHolder(front), "/");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
