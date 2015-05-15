@@ -82,7 +82,7 @@ public class UserDataSet implements Serializable {
     public JsonObject getJson() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", 1);
-        jsonObject.addProperty("login", this.getName());
+        jsonObject.addProperty("name", this.getName());
         jsonObject.addProperty("email", this.getEmail());
         return jsonObject;
     }

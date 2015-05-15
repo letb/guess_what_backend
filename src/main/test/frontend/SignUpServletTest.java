@@ -45,7 +45,7 @@ public class SignUpServletTest {
         when(request.getParameter("email")).thenReturn("");
 
         String CorrectResponse = "{\"status\":403,\"body\":{\"messages\":" +
-                "{\"login\":\"shouldn't be empty\",\"email\":\"shouldn't be empty\"," +
+                "{\"name\":\"shouldn't be empty\",\"email\":\"shouldn't be empty\"," +
                 "\"password\":\"shouldn't be empty\"}}}";
 
         SignUpServlet signUp = new SignUpServlet(accountService);
