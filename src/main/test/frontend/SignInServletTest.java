@@ -1,10 +1,9 @@
-package tests.frontend;
+package frontend;
 
 import base.AccountService;
-import frontend.SignInServlet;
 import base.dataSets.UserDataSet;
 import org.junit.Test;
-import tests.classesForTests.AccountServiceStub;
+import classesForTests.AccountServiceStub;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

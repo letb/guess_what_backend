@@ -1,7 +1,6 @@
-package tests.frontend;
+package frontend;
 
 import base.AccountService;
-import frontend.AdminServlet;
 import base.dataSets.UserDataSet;
 import org.junit.Test;
 

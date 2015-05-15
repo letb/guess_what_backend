@@ -1,4 +1,4 @@
-package tests.classesForTests;
+package classesForTests;
 
 import base.AccountService;
 import base.dataSets.UserDataSet;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by ivan on 03.04.15.
  */
-public class AccountServiceStubExist implements AccountService{
+public class AccountServiceStubExist implements AccountService {
     private Map<String, UserDataSet> users = new HashMap<>();
     private Map<String, UserDataSet> sessions = new HashMap<>();
 
@@ -21,7 +21,7 @@ public class AccountServiceStubExist implements AccountService{
         return new UserDataSet("name", "password", "email");
     }
 
-    public void addSessions(String sessionId, UserDataSet userDataSet) {
+    public void addSession(String sessionId, UserDataSet userDataSet) {
         sessions.put(sessionId, userDataSet);
     }
 
@@ -34,4 +34,8 @@ public class AccountServiceStubExist implements AccountService{
     public String getNumberOfOnlineUsers() { return String.valueOf(sessions.size()); }
 
     public String getNumberOfUsers() { return String.valueOf(users.size()); }
+
+    public String getUserName(String sessionId) {
+        return sessions.get(sessionId).getName();
+    }
 }
