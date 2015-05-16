@@ -23,7 +23,7 @@ public class DBSettings {
         configuration.setProperty("hibernate.connection.url", url);
         configuration.setProperty("hibernate.connection.username", name);
         configuration.setProperty("hibernate.connection.password", password);
-        configuration.setProperty("hibernate.show_sql", show);
+//        configuration.setProperty("hibernate.show_sql", show);
         configuration.setProperty("hibernate.hbm2ddl.auto", auto);
 
         return  configuration;

@@ -24,7 +24,8 @@
                 if(data.status == "start"){
                     document.getElementById("wait").style.display = "none";
                     document.getElementById("gameplay").style.display = "block";
-//                    document.getElementById("enemyName").innerHTML = data.enemyName;
+                   document.getElementById("enemyName").innerHTML = data.enemyName;
+                    console.log(data);
                 }
 
                 if(data.status == "finish"){

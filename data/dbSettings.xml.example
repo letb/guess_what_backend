@@ -4,6 +4,6 @@
     <url>jdbc:postgresql://localhost:5432/java_db</url>
     <name>g03</name>
     <password>g037606</password>
-    <show>true</show>
+    <show>false</show>
     <auto>validate</auto>
 </class>

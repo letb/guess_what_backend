@@ -11,7 +11,9 @@ import java.util.Set;
 
 public class GameMechanicsImpl implements GameMechanics {
     private static final int STEP_TIME = 100;
-    private static final int gameTime = 1200 * 1000;
+    private static final int gameTime = 15 * 1000;
+    private static final String keyword = "ananas";
+
 
     private WebSocketService webSocketService;
     private Map<String, GameSession> nameToGame = new HashMap<>();
@@ -29,15 +31,16 @@ public class GameMechanicsImpl implements GameMechanics {
         } else {
             waiter = user;
         }
+    }
 
+    public boolean isAnswer(String word) {
+        return word.contentEquals(keyword);
     }
 
     private void startGame(String first) {
         String second = waiter;
         GameSession gameSession = new GameSession(first, second);
         allSessions.add(gameSession);
-        nameToGame.put(first, gameSession);
-        nameToGame.put(second, gameSession);
 
         webSocketService.notifyStartGame(gameSession.getSelf(first));
         webSocketService.notifyStartGame(gameSession.getSelf(second));

@@ -1,7 +1,10 @@
 package frontend;
 
 import com.google.gson.JsonObject;
+import dbService.DBServiceImpl;
 import main.Context;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.JsonResponse;
 import utils.TimeHelper;
 import base.AccountService;
@@ -18,6 +21,9 @@ import java.io.IOException;
  */
 
 public class AdminServlet extends HttpServlet{
+    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
+
+
     private AccountService accountService;
 
     public AdminServlet(AccountService accountService) {
@@ -42,9 +48,9 @@ public class AdminServlet extends HttpServlet{
                 if (timeString != null) {
                     try {
                         int timeMS = Integer.valueOf(timeString);
-                        System.out.print("Server will be down after: " + timeMS + " ms");
+                        logger.info("Server will be down after: " + timeMS + " ms");
                         TimeHelper.sleep(timeMS);
-                        System.out.print("\nShutdown");
+                        logger.info("\nShutdown");
                         System.exit(0);
                     } catch (NumberFormatException e) {
                         outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,

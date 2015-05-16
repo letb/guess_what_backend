@@ -7,6 +7,8 @@ import dbService.DBServiceImpl;
 import frontend.*;
 import base.AccountService;
 import mechanics.GameMechanicsImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -20,14 +22,20 @@ import javax.servlet.Servlet;
 
 
 public class Main {
+    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
+
     public static void main(String[] args) throws Exception {
         ResourceFactory resourceFactory = ResourceFactory.instance();
         ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("serverSettings");
+
+
         if(serverSettings == null) {
             serverSettings = new ServerSettings();
         }
         int port = serverSettings.getPort();
-        System.out.append("Starting at port: ").append("" + port).append('\n');
+        String starMsg = new String();
+        starMsg.concat("Starting at port: " + port + '\n');
+        logger.info(starMsg);
 
         Context context = new Context();
         AccountService accountService = new AccountServiceImpl();
@@ -55,7 +63,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
         servletContext.addServlet(new ServletHolder(game), "/game.html");
-        servletContext.addServlet(new ServletHolder(front), "/");
+        servletContext.addServlet(new ServletHolder(front), "/scoreboard");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
@@ -67,7 +75,7 @@ public class Main {
         Server server = new Server(port);
         server.setHandler(handlers);
 
-        server.start();
+            server.start();
 //        server.join();
 
         gameMechanics.run();

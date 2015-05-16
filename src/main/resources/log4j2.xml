@@ -2,6 +2,7 @@
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="log_dir">out/${date:yyyy_MM_dd_HH_mm_ss}</Property>
+        <Property name="show_sql">false</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">

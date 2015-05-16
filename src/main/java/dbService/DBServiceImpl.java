@@ -25,7 +25,7 @@ public class DBServiceImpl implements DBService {
         ResourceFactory resourceFactory = ResourceFactory.instance();
         DBSettings dbSettings = (DBSettings)resourceFactory.getResource("dbSettings");
         if(dbSettings == null) {
-            System.out.printf("No db settings. I give up");
+            logger.info("No db settings. I give up");
             System.exit(3);
         }
         Configuration configuration = dbSettings.getConfiguration();

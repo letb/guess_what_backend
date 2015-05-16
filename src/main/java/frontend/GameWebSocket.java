@@ -41,8 +41,9 @@ public class GameWebSocket {
             JSONObject jsonStart = new JSONObject();
             enemyName = user.getEnemyName();
             jsonStart.put("status", "start");
-            jsonStart.put("enemyName", enemyName);
+            jsonStart.put("enemyName", enemyName.toString());
             session.getRemote().sendString(jsonStart.toJSONString());
+            logger.info(jsonStart.toJSONString());
         } catch (Exception e) {
             logger.catching(e);
         }
@@ -55,7 +56,7 @@ public class GameWebSocket {
             jsonStart.put("win", win);
             session.getRemote().sendString(jsonStart.toJSONString());
         } catch (Exception e) {
-            logger.catching(e);
+//            logger.catching(e);
         }
     }
 
@@ -71,6 +72,7 @@ public class GameWebSocket {
         try {
             logger.info(data);
             session.getRemote().sendString(data);
+            gameMechanics.isAnswer(data);
             webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
         } catch (Exception e) {
             logger.catching(e);
