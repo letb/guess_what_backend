@@ -44,7 +44,7 @@ public class SignUpServletTest {
         when(request.getParameter("password")).thenReturn("");
         when(request.getParameter("email")).thenReturn("");
 
-        String CorrectResponse = "{\"status\":403,\"body\":{\"messages\":" +
+        String CorrectResponse = "{\"status\":\"403\",\"body\":{\"messages\":" +
                 "{\"name\":\"shouldn't be empty\",\"email\":\"shouldn't be empty\"," +
                 "\"password\":\"shouldn't be empty\"}}}";
 
@@ -68,7 +68,7 @@ public class SignUpServletTest {
         when(request.getParameter("password")).thenReturn(password);
         when(request.getParameter("email")).thenReturn(email);
 
-        String CorrectResponse = "{\"status\":201,\"body\":{\"id\":1,\"name\":" +
+        String CorrectResponse = "{\"status\":\"201\",\"body\":{\"id\":1,\"name\":" +
             "\"test\",\"email\":\"test@test\"}}";
 
         SignUpServlet signUp = new SignUpServlet(accountService);
@@ -90,7 +90,7 @@ public class SignUpServletTest {
         when(request.getParameter("name")).thenReturn(name);
         when(request.getParameter("password")).thenReturn(password);
         when(request.getParameter("email")).thenReturn(email);
-        String CorrectResponse = "{\"status\":401,\"body\":{\"messages\":{\"user\":\"already exist\"}}}";
+        String CorrectResponse = "{\"status\":\"401\",\"body\":{\"messages\":{\"user\":\"already exist\"}}}";
 
         SignUpServlet signUp = new SignUpServlet(accountServiceExist);
 

@@ -46,7 +46,7 @@ public class SignInServletTest {
         when(request.getParameter("password")).thenReturn("123");
         when(accountService.getUser("test")).thenReturn(null);
 
-        String CorrectResponse = "{\"status\":401,\"body\":" +
+        String CorrectResponse = "{\"status\":\"401\",\"body\":" +
                 "{\"messages\":{\"user\":\"wrong login or password\"}}}";
 
         SignInServlet signIn = new SignInServlet(accountService);
@@ -67,7 +67,7 @@ public class SignInServletTest {
         when(request.getParameter("name")).thenReturn(name);
         when(request.getParameter("password")).thenReturn(password);
         when(accountService.getUser("test")).thenReturn(new UserDataSet(name, "456", email));
-        String CorrectResponse = "{\"status\":401,\"body\":" +
+        String CorrectResponse = "{\"status\":\"401\",\"body\":" +
                 "{\"messages\":{\"user\":\"wrong login or password\"}}}";
 
         SignInServlet signIn = new SignInServlet(accountService);
@@ -89,7 +89,7 @@ public class SignInServletTest {
         when(request.getParameter("password")).thenReturn(password);
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":200,\"body\":" +
+        String CorrectResponse = "{\"status\":\"200\",\"body\":" +
                 "{\"id\":1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
         SignInServlet signIn = new SignInServlet(accountServiceStub);

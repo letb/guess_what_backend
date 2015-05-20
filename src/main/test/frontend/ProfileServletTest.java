@@ -45,7 +45,7 @@ public class ProfileServletTest {
 
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":401,\"body\":{\"messages\":{\"user\":\"not authorized\"}}}";
+        String CorrectResponse = "{\"status\":\"401\",\"body\":{\"messages\":{\"user\":\"not authorized\"}}}";
 
         ProfileServlet profile = new ProfileServlet(accountService);
         profile.doGet(request, response);
@@ -62,7 +62,7 @@ public class ProfileServletTest {
         HttpServletRequest request = getMockedRequest();
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":200,\"body\"" +
+        String CorrectResponse = "{\"status\":\"200\",\"body\"" +
                 ":{\"id\":1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
         ProfileServlet profile = new ProfileServlet(accountServiceExist);

@@ -44,7 +44,7 @@ public class SignOutTest {
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
 
-        String CorrectResponse = "{\"status\":200,\"body\":{}}";
+        String CorrectResponse = "{\"status\":\"200\",\"body\":{}}";
 
         SignOutServlet signOutServlet = new SignOutServlet(accountServiceExist);
         signOutServlet.doGet(request, response);
