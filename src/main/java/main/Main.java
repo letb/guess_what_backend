@@ -39,17 +39,19 @@ public class Main {
 
         Context context = new Context();
         AccountService accountService = new AccountServiceImpl();
-        context.add(AccountService.class, accountService);
         DBService dbService = new DBServiceImpl();
-        context.add(DBService.class, dbService);
         WebSocketService webSocketService = new WebSocketServiceImpl();
-        context.add(WebSocketService.class, webSocketService);
         GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService);
+
+        context.add(AccountService.class, accountService);
+        context.add(DBService.class, dbService);
+        context.add(WebSocketService.class, webSocketService);
         context.add(GameMechanics.class, gameMechanics);
 
 
         Servlet signin = new SignInServlet(context);
         Servlet signUp = new SignUpServlet(context);
+        Servlet signOut = new SignOutServlet(context);
         Servlet profile = new ProfileServlet(context);
         Servlet admin = new AdminServlet(context);
         Servlet gameplay = new WebSocketGameServlet(context);
@@ -59,6 +61,7 @@ public class Main {
         ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
         servletContext.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
+        servletContext.addServlet(new ServletHolder(signOut), "/api/v1/auth/signout");
         servletContext.addServlet(new ServletHolder(profile), "/api/v1/profile");
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
