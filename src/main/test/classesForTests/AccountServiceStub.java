@@ -39,4 +39,8 @@ public class AccountServiceStub implements AccountService {
     public String getUserName(String sessionId) {
         return sessions.get(sessionId).getName();
     }
+
+    public UserDataSet[] getScoreboard () {
+        return new UserDataSet[0];
+    }
 }

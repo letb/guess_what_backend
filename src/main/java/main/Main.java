@@ -57,6 +57,7 @@ public class Main {
         Servlet gameplay = new WebSocketGameServlet(context);
         Servlet game = new GameServlet(context);
         Servlet front = new FrontServlet(context);
+        Servlet scoreboard = new ScoreboardServlet(context);
 
         ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
@@ -67,6 +68,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
         servletContext.addServlet(new ServletHolder(game), "/game.html");
         servletContext.addServlet(new ServletHolder(front), "/scoreboard");
+        servletContext.addServlet(new ServletHolder(scoreboard), "/api/v1/scoreboard");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);

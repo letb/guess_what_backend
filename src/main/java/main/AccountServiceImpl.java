@@ -6,6 +6,7 @@ import base.dataSets.UserDataSet;
 import dbService.DBServiceImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -50,4 +51,13 @@ public class AccountServiceImpl implements AccountService {
     public String getNumberOfOnlineUsers() { return String.valueOf(sessions.size()); }
 
     public String getNumberOfUsers() { return String.valueOf(users.size()); }
+
+    public UserDataSet[] getScoreboard () {
+        List usersList = dbService.getScoreboard();
+        UserDataSet[] users = new UserDataSet[usersList.size()];
+        if(usersList.size() != 0) {
+            usersList.toArray(users);
+        }
+        return users;
+    }
 }

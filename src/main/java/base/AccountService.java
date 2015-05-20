@@ -2,6 +2,8 @@ package base;
 
 import base.dataSets.UserDataSet;
 
+import java.util.List;
+
 /**
  * Created by ivan on 29.03.15.
  */
@@ -22,4 +24,6 @@ public interface AccountService {
     String getNumberOfOnlineUsers();
 
     String getNumberOfUsers();
+
+    UserDataSet[] getScoreboard();
 }

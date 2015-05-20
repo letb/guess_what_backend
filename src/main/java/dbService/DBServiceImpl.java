@@ -14,6 +14,8 @@ import org.hibernate.service.ServiceRegistry;
 import resource.DBSettings;
 import resource.ResourceFactory;
 
+import java.util.List;
+
 /**
  * Created by ivan on 27.04.15.
  */
@@ -48,6 +50,12 @@ public class DBServiceImpl implements DBService {
         Session session = sessionFactory.openSession();
         UserDataSetDAO dao = new UserDataSetDAO(session);
         return dao.readByLogin(login);
+    }
+
+    public List getScoreboard() {
+        Session session = sessionFactory.openSession();
+        UserDataSetDAO dao = new UserDataSetDAO(session);
+        return dao.getScoreboard();
     }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {

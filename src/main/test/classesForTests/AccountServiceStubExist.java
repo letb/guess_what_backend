@@ -4,6 +4,7 @@ import base.AccountService;
 import base.dataSets.UserDataSet;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,5 +38,9 @@ public class AccountServiceStubExist implements AccountService {
 
     public String getUserName(String sessionId) {
         return sessions.get(sessionId).getName();
+    }
+
+    public UserDataSet[] getScoreboard () {
+        return new UserDataSet[0];
     }
 }
