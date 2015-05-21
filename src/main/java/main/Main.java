@@ -37,12 +37,12 @@ public class Main {
         starMsg.concat("Starting at port: " + port + '\n');
         logger.info(starMsg);
 
-        Context context = new Context();
         AccountService accountService = new AccountServiceImpl();
         DBService dbService = new DBServiceImpl();
         WebSocketService webSocketService = new WebSocketServiceImpl();
         GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService);
 
+        Context context = new Context();
         context.add(AccountService.class, accountService);
         context.add(DBService.class, dbService);
         context.add(WebSocketService.class, webSocketService);

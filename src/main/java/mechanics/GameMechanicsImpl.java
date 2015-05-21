@@ -2,6 +2,10 @@ package mechanics;
 
 import base.GameMechanics;
 import base.WebSocketService;
+import com.google.gson.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.simple.JSONObject;
 import utils.TimeHelper;
 
 import java.util.HashMap;
@@ -11,14 +15,15 @@ import java.util.Set;
 
 public class GameMechanicsImpl implements GameMechanics {
     private static final int STEP_TIME = 100;
-    private static final int gameTime = 15 * 1000;
-    private static final String keyword = "ananas";
+    private static final int gameTime = 1200 * 1000;
+    private static final String keyword = "ананас";
 
 
     private WebSocketService webSocketService;
     private Map<String, GameSession> nameToGame = new HashMap<>();
     private Set<GameSession> allSessions = new HashSet<>();
     private String waiter;
+    private Boolean isAnswered = false;
 
     public GameMechanicsImpl(WebSocketService webSocketService) {
         this.webSocketService = webSocketService;
@@ -33,8 +38,8 @@ public class GameMechanicsImpl implements GameMechanics {
         }
     }
 
-    public boolean isAnswer(String word) {
-        return word.contentEquals(keyword);
+    public void checkAnswer(String word) {
+        isAnswered = word.contentEquals(keyword);
     }
 
     private void startGame(String first) {
@@ -48,7 +53,7 @@ public class GameMechanicsImpl implements GameMechanics {
 
     private void gameStep() {
         for (GameSession session : allSessions) {
-            if (session.getSessionTime() >= gameTime) {
+            if (session.getSessionTime() >= gameTime || isAnswered) {
                 boolean firstWin = session.isFirstWin();
                 webSocketService.notifyGameOver(session.getFirst(), firstWin);
                 webSocketService.notifyGameOver(session.getSecond(), !firstWin);

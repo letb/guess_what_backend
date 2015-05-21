@@ -12,6 +12,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 
 @WebSocket
@@ -72,8 +73,10 @@ public class GameWebSocket {
         try {
             logger.info(data);
             session.getRemote().sendString(data);
-            gameMechanics.isAnswer(data);
             webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+
+            JSONObject jsonData = (JSONObject)new JSONParser().parse(data);
+            gameMechanics.checkAnswer((String)jsonData.get("message"));
         } catch (Exception e) {
             logger.catching(e);
         }
