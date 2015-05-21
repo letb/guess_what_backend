@@ -37,6 +37,11 @@ public class DBServiceImpl implements DBService {
         sessionFactory = createSessionFactory(configuration);
     }
 
+    public DBServiceImpl(Configuration configuration) {
+        configuration.addAnnotatedClass(UserDataSet.class);
+        sessionFactory = createSessionFactory(configuration);
+    }
+
     public void save(UserDataSet dataSet) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
