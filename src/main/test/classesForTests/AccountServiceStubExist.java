@@ -2,6 +2,7 @@ package classesForTests;
 
 import base.AccountService;
 import base.dataSets.UserDataSet;
+import org.eclipse.jetty.server.Authentication;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,12 @@ public class AccountServiceStubExist implements AccountService {
     }
 
     public UserDataSet[] getScoreboard () {
-        return new UserDataSet[0];
+         UserDataSet[] users = new UserDataSet[] {new UserDataSet("first", "1", "first@mail"),
+                new UserDataSet("second", "1", "second@mail"),
+                new UserDataSet("third", "1", "third@mail")};
+        for(int i = 0; i < 3; i++) {
+            users[i].setScore((int)Math.pow(10, 3 - i));
+        }
+        return users;
     }
 }
