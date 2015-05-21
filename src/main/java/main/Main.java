@@ -67,7 +67,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
         servletContext.addServlet(new ServletHolder(game), "/game.html");
-        servletContext.addServlet(new ServletHolder(front), "/scoreboard");
+        servletContext.addServlet(new ServletHolder(front), "/");
         servletContext.addServlet(new ServletHolder(scoreboard), "/api/v1/scoreboard");
 
         ResourceHandler resource_handler = new ResourceHandler();
