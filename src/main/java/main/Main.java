@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         ResourceFactory resourceFactory = ResourceFactory.instance();
-        ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("serverSettings");
+        ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("./data/serverSettings");
 
 
         if(serverSettings == null) {

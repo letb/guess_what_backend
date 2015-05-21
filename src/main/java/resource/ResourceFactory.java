@@ -21,7 +21,7 @@ public class ResourceFactory {
         Object object = resources.get(resourceWay);
 
         if(object == null ) {
-            object = ReadXMLFileSAX.readXML("./data/" + resourceWay + ".xml");
+            object = ReadXMLFileSAX.readXML(resourceWay + ".xml");
             resources.put(resourceWay, object);
         }
         return object;
