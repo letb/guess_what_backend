@@ -40,13 +40,10 @@ public class DBServiceImplTest {
 
     @Test
     public void getScoreboardTest() {
-        UserDataSet first = new UserDataSet("first", "1", "first@mail");
-        UserDataSet second = new UserDataSet("second", "1", "second@mail");
-        UserDataSet third = new UserDataSet("third", "1", "third@mail");
-        dbService.save(first);
-        dbService.save(second);
-        dbService.save(third);
+        for (int i = 0; i < 12; i++) {
+            dbService.save(new UserDataSet("user" + i, "1", "mail@mail"));
+        }
         List users = dbService.getScoreboard();
-        assertEquals(3, users.size());
+        assertEquals(10, users.size());
     }
 }
