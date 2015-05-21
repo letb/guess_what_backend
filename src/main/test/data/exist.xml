@@ -1,0 +1,4 @@
+<class type='classesForTests.ResourceTest'>
+    <intField>20</intField>
+    <strField>hello world!</strField>
+</class>
