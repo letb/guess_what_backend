@@ -16,6 +16,7 @@ import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+//TODO в стабе менять id пользователей
 public class SignInServletTest {
     AccountService accountService = mock(AccountService.class);
     AccountService accountServiceStub = new AccountServiceStub();

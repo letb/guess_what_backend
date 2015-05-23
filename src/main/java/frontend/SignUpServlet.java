@@ -61,6 +61,7 @@ public class SignUpServlet extends HttpServlet {
             if (accountService.addUser(name, new UserDataSet(name, password, email))) {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 UserDataSet userDataSet = accountService.getUser(name);
+                accountService.addSession(request.getSession().getId(), userDataSet);
                 bodyObject = userDataSet.getJson();
                 outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {
