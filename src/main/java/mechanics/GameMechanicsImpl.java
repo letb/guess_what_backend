@@ -16,8 +16,9 @@ import java.util.Set;
 
 public class GameMechanicsImpl implements GameMechanics {
     private static final int STEP_TIME = 100;
+    // TODO: move to resource factory
     private static final int gameTime = 1200 * 1000;
-    private static final String keyword = "ананас";
+    private static final String keyword = "котик";
 
     private WebSocketService webSocketService;
     private Map<String, GameSession> nameToGame = new HashMap<>();
@@ -30,6 +31,7 @@ public class GameMechanicsImpl implements GameMechanics {
         this.webSocketService = webSocketService;
     }
 
+    // TODO concurrent linkedqueue
     public void addUser(String user) {
         if (waiter != null) {
             startGame(user);
