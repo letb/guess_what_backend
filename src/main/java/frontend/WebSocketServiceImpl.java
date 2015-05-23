@@ -17,12 +17,14 @@ public class WebSocketServiceImpl implements WebSocketService {
         return userSockets.get(name);
     }
 
-    public void notifyStartGame(GameUser user) {
+
+    public void notifyStartGame(GameUser user, String keyword) {
         GameWebSocket gameWebSocket = userSockets.get(user.getMyName());
-        gameWebSocket.startGame(user);
+        gameWebSocket.startGame(user, keyword);
     }
 
-    public void notifyGameOver(GameUser user, boolean win) {
-        userSockets.get(user.getMyName()).gameOver(user, win);
+    public void notifyGameOver(GameUser user, boolean win, String keyword) {
+        GameWebSocket gameWebSocket = userSockets.get(user.getMyName());
+        gameWebSocket.gameOver(user, win, keyword);
     }
 }

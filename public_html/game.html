@@ -1,6 +1,4 @@
-﻿
-
-<html>
+﻿<html>
 <head>
     <meta charset="UTF-8"/>
     <title>Game</title>
@@ -21,27 +19,28 @@
 
             ws.onmessage = function (event) {
                 var data = JSON.parse(event.data);
-                if(data.status == "start"){
+                var body = data.body;
+                if(data.type == "start") {
                     document.getElementById("wait").style.display = "none";
                     document.getElementById("gameplay").style.display = "block";
-                   document.getElementById("enemyName").innerHTML = data.enemyName;
+
                     console.log(data);
                 }
 
-                if(data.status == "finish"){
+                if(data.type == "finish"){
                     document.getElementById("gameOver").style.display = "block";
                     document.getElementById("gameplay").style.display = "none";
 
-                    if(data.win)
+                    if(body.win)
                         document.getElementById("win").innerHTML = "winner!";
                     else
                         document.getElementById("win").innerHTML = "loser!";
                 }
 
-                if(data.status == "message"){
+                if(data.type == "chat"){
 
                     var $textarea = document.getElementById("messages");
-                    $textarea.value = $textarea.value + data.username + ":" + data.message + "\n";
+                    $textarea.value = $textarea.value + body.user + ":" + body.message + "\n";
                 }
             }
 
@@ -53,8 +52,8 @@
 
         function sendMessage() {
 
-            var message = {'status' : 'message', 'message': document.getElementById("message").value,
-                                                 'username': myName};
+            var message = {'type' : 'chat', body: {'message': document.getElementById("message").value,
+                                                    'user': myName}};
             console.log(message);
             document.getElementById("message").value = '';
             ws.send(JSON.stringify(message));

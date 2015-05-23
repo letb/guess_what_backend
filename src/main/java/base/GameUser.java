@@ -3,10 +3,8 @@ package base;
 public class GameUser {
     private final String myName;
     private String enemyName;
-    private boolean isLeader;
-    private int myScore = 0;
-    private int enemyScore = 0;
-
+    private boolean isLeader = false;
+    private boolean isAnsweredRight = false;
     public GameUser(String myName) {
         this.myName = myName;
     }
@@ -19,24 +17,23 @@ public class GameUser {
         return enemyName;
     }
 
-
-    public int getMyScore() {
-        return myScore;
+    public void setAnsweredRight() {
+        isAnsweredRight = true;
     }
 
-    public int getEnemyScore() {
-        return enemyScore;
-    }
-
-    public void incMyScore() {
-        ++myScore;
-    }
-
-    public void incEnemyScore() {
-        ++enemyScore;
+    public boolean getAnsweredRight() {
+        return isAnsweredRight;
     }
 
     public void setEnemyName(String enemyName) {
         this.enemyName = enemyName;
+    }
+
+    public boolean getIsLeader() {
+        return isLeader;
+    }
+
+    public void setIsLeader() {
+        this.isLeader = true;
     }
 }

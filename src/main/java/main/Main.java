@@ -70,6 +70,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(front), "/");
         servletContext.addServlet(new ServletHolder(scoreboard), "/api/v1/scoreboard");
 
+
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setResourceBase("public_html");

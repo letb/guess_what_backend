@@ -37,27 +37,42 @@ public class GameWebSocket {
         return myName;
     }
 
-    public void startGame(GameUser user) {
+    public void startGame(GameUser user, String keyword) {
         try {
-            JSONObject jsonStart = new JSONObject();
+            JSONObject startObject = new JSONObject();
+            JSONObject bodyObject = new JSONObject();
             enemyName = user.getEnemyName();
-            jsonStart.put("status", "start");
-            jsonStart.put("enemyName", enemyName.toString());
-            session.getRemote().sendString(jsonStart.toJSONString());
-            logger.info(jsonStart.toJSONString());
+            isLeader = user.getIsLeader();
+
+            bodyObject.put("enemy", enemyName);
+            bodyObject.put("leader", isLeader);
+            if (isLeader)
+                bodyObject.put("keyword", keyword);
+
+            startObject.put("type", "start");
+            startObject.put("body", bodyObject);
+
+            session.getRemote().sendString(startObject.toJSONString());
+            logger.info(startObject.toJSONString());
         } catch (Exception e) {
             logger.catching(e);
         }
     }
 
-    public void gameOver(GameUser user, boolean win) {
+    public void gameOver(GameUser user, boolean win, String keyword) {
         try {
-            JSONObject jsonStart = new JSONObject();
-            jsonStart.put("status", "finish");
-            jsonStart.put("win", win);
-            session.getRemote().sendString(jsonStart.toJSONString());
+            JSONObject overObject = new JSONObject();
+            JSONObject bodyObject = new JSONObject();
+
+            bodyObject.put("win", win);
+            bodyObject.put("answer", keyword);
+
+            overObject.put("type", "finish");
+            overObject.put("body", bodyObject);
+
+            session.getRemote().sendString(overObject.toJSONString());
         } catch (Exception e) {
-//            logger.catching(e);
+            logger.catching(e);
         }
     }
 
@@ -71,12 +86,19 @@ public class GameWebSocket {
     @OnWebSocketMessage
     public void onMessage(String data) {
         try {
-            logger.info(data);
-            session.getRemote().sendString(data);
-            webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+            JSONObject messageObject = (JSONObject)new JSONParser().parse(data);
 
-            JSONObject jsonData = (JSONObject)new JSONParser().parse(data);
-            gameMechanics.checkAnswer((String)jsonData.get("message"));
+            if (messageObject.get("type").toString().contentEquals("chat")) {
+                session.getRemote().sendString(data);
+                webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+
+                JSONObject bodyObject = (JSONObject)messageObject.get("body");
+                String message = (String)bodyObject.get("message");
+                gameMechanics.checkAnswer(myName, message);
+            } else if (messageObject.get("type").toString().contentEquals("canvas")) {
+                session.getRemote().sendString(data);
+                webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+            }
         } catch (Exception e) {
             logger.catching(e);
         }
