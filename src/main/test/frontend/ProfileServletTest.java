@@ -63,7 +63,7 @@ public class ProfileServletTest {
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
         String CorrectResponse = "{\"status\":\"200\",\"body\"" +
-                ":{\"id\":1,\"name\":\"test\",\"email\":\"test@test\"}}";
+                ":{\"id\":-1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
         ProfileServlet profile = new ProfileServlet(accountServiceExist);
         profile.doGet(request, response);

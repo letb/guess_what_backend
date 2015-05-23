@@ -68,7 +68,7 @@ public class SignUpServletTest {
         when(request.getParameter("password")).thenReturn(password);
         when(request.getParameter("email")).thenReturn(email);
 
-        String CorrectResponse = "{\"status\":\"201\",\"body\":{\"id\":1,\"name\":" +
+        String CorrectResponse = "{\"status\":\"201\",\"body\":{\"id\":-1,\"name\":" +
             "\"test\",\"email\":\"test@test\"}}";
 
         SignUpServlet signUp = new SignUpServlet(accountService);

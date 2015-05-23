@@ -90,7 +90,7 @@ public class SignInServletTest {
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
         String CorrectResponse = "{\"status\":\"200\",\"body\":" +
-                "{\"id\":1,\"name\":\"test\",\"email\":\"test@test\"}}";
+                "{\"id\":-1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
         SignInServlet signIn = new SignInServlet(accountServiceStub);
         signIn.doPost(request, response);
