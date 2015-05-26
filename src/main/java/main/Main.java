@@ -1,11 +1,13 @@
 package main;
 
-import base.DBService;
-import base.GameMechanics;
-import base.WebSocketService;
+import accountService.AccountServiceImpl;
+import dbService.DBService;
+import mechanics.GameMechanics;
+import messageSystem.MessageSystem;
+import webSocketService.WebSocketService;
 import dbService.DBServiceImpl;
 import frontend.*;
-import base.AccountService;
+import accountService.AccountService;
 import mechanics.GameMechanicsImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +19,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import resource.ResourceFactory;
 import resource.ServerSettings;
+import webSocketService.WebSocketServiceImpl;
 
 import javax.servlet.Servlet;
 
@@ -25,7 +28,8 @@ public class Main {
     static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
 
     public static void main(String[] args) throws Exception {
-        ResourceFactory resourceFactory = ResourceFactory.instance();
+        final MessageSystem messageSystem = new MessageSystem();
+        final ResourceFactory resourceFactory = ResourceFactory.instance();
         ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("./data/serverSettings");
 
 
@@ -33,11 +37,9 @@ public class Main {
             serverSettings = new ServerSettings();
         }
         int port = serverSettings.getPort();
-        String starMsg = new String();
-        starMsg.concat("Starting at port: " + port + '\n');
-        logger.info(starMsg);
+        logger.info("Starting at port: " + port + '\n');
 
-        AccountService accountService = new AccountServiceImpl();
+        AccountService accountService = new AccountServiceImpl(messageSystem);
         DBService dbService = new DBServiceImpl();
         WebSocketService webSocketService = new WebSocketServiceImpl();
         GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService);

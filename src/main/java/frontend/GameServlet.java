@@ -1,8 +1,8 @@
 package frontend;
 
-import base.AccountService;
-import base.GameMechanics;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import mechanics.GameMechanics;
+import user.dataSets.UserDataSet;
 import com.google.gson.JsonObject;
 import main.Context;
 import utils.JsonResponse;

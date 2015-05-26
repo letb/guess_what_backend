@@ -1,7 +1,7 @@
 package frontend;
 
-import base.AccountService;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import main.Context;

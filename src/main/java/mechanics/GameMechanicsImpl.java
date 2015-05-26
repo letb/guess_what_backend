@@ -1,12 +1,7 @@
 package mechanics;
 
-import base.GameMechanics;
-import base.GameUser;
-import base.WebSocketService;
-import com.google.gson.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.simple.JSONObject;
+import user.GameUser;
+import webSocketService.WebSocketService;
 import utils.TimeHelper;
 
 import java.util.HashMap;
@@ -14,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class GameMechanicsImpl implements GameMechanics {
+public final class GameMechanicsImpl implements GameMechanics {
     private static final int STEP_TIME = 100;
     // TODO: move to resource factory
     private static final int gameTime = 1200 * 1000;

@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import base.dataSets.UserDataSet;
+import user.dataSets.UserDataSet;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;

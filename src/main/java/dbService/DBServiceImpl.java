@@ -1,7 +1,6 @@
 package dbService;
 
-import base.DBService;
-import base.dataSets.UserDataSet;
+import user.dataSets.UserDataSet;
 import dbService.dao.UserDataSetDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  * Created by ivan on 27.04.15.
  */
-public class DBServiceImpl implements DBService {
+public final class DBServiceImpl implements DBService {
    private SessionFactory sessionFactory;
    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
 

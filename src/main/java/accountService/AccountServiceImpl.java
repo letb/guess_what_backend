@@ -1,8 +1,11 @@
-package main;
+package accountService;
 
-import base.AccountService;
-import base.DBService;
-import base.dataSets.UserDataSet;
+import dbService.DBService;
+import messageSystem.Abonent;
+import messageSystem.Address;
+import messageSystem.MessageSystem;
+import resource.ThreadSettings;
+import user.dataSets.UserDataSet;
 import dbService.DBServiceImpl;
 
 import java.util.HashMap;
@@ -10,10 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AccountServiceImpl implements AccountService {
-    private Map<String, UserDataSet> users = new HashMap<>();
-    private Map<String, UserDataSet> sessions = new HashMap<>();
-    private DBService dbService = new DBServiceImpl();
+public final class AccountServiceImpl implements AccountService, Abonent, Runnable {
+    private final Map<String, UserDataSet> users = new HashMap<>();
+    private final Map<String, UserDataSet> sessions = new HashMap<>();
+    private final DBService dbService = new DBServiceImpl();
+
+    private final MessageSystem messageSystem;
+    private final Address address = new Address();
+
+    public AccountServiceImpl(MessageSystem messageSystem) {
+        this.messageSystem = messageSystem;
+        messageSystem.addService(this);
+        messageSystem.getAddressService().registerAccountService(this);
+    }
 
     public boolean addUser(String userName, UserDataSet userDataSet) {
         if (users.containsKey(userName))
@@ -59,5 +71,22 @@ public class AccountServiceImpl implements AccountService {
             usersList.toArray(users);
         }
         return users;
+    }
+
+    @Override
+    public Address getAddress() {
+        return address;
+    }
+
+    @Override
+    public void run() {
+        while (true){
+            messageSystem.execForAbonent(this);
+            try {
+                Thread.sleep(ThreadSettings.SERVICE_SLEEP_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

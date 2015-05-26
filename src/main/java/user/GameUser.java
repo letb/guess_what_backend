@@ -1,4 +1,4 @@
-package base;
+package user;
 
 public class GameUser {
     private final String myName;

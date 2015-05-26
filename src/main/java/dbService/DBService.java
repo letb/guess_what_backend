@@ -1,6 +1,6 @@
-package base;
+package dbService;
 
-import base.dataSets.UserDataSet;
+import user.dataSets.UserDataSet;
 
 import java.util.List;
 

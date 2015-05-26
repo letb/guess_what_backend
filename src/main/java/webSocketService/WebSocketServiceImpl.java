@@ -1,12 +1,12 @@
-package frontend;
+package webSocketService;
 
-import base.GameUser;
-import base.WebSocketService;
+import user.GameUser;
+import frontend.GameWebSocket;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class WebSocketServiceImpl implements WebSocketService {
+public final class WebSocketServiceImpl implements WebSocketService {
     private Map<String, GameWebSocket> userSockets = new HashMap<>();
 
     public void addUser(GameWebSocket user) {

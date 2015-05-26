@@ -1,11 +1,9 @@
 package classesForTests;
 
-import base.AccountService;
-import base.dataSets.UserDataSet;
-import org.eclipse.jetty.server.Authentication;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

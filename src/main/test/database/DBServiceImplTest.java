@@ -1,9 +1,8 @@
 package database;
 
-import base.DBService;
-import base.dataSets.UserDataSet;
+import dbService.DBService;
+import user.dataSets.UserDataSet;
 import dbService.DBServiceImpl;
-import junit.framework.Assert;
 import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;

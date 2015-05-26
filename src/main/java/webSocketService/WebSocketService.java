@@ -1,6 +1,7 @@
-package base;
+package webSocketService;
 
 
+import user.GameUser;
 import frontend.GameWebSocket;
 
 public interface WebSocketService {

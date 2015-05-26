@@ -7,8 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.JsonResponse;
 import utils.TimeHelper;
-import base.AccountService;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

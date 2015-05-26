@@ -1,6 +1,6 @@
 package frontend;
 
-import base.AccountService;
+import accountService.AccountService;
 import org.junit.Test;
 import classesForTests.AccountServiceStub;
 import classesForTests.AccountServiceStubExist;

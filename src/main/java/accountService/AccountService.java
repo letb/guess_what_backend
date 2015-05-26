@@ -1,8 +1,6 @@
-package base;
+package accountService;
 
-import base.dataSets.UserDataSet;
-
-import java.util.List;
+import user.dataSets.UserDataSet;
 
 /**
  * Created by ivan on 29.03.15.
