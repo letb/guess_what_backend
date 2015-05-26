@@ -7,6 +7,7 @@ import classesForTests.AccountServiceStubExist;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -61,12 +62,15 @@ public class SignUpServletTest {
         final String name = "test";
         final String password = "123";
         final String email = "test@test";
+        final HttpSession httpSession = mock(HttpSession.class);
 
         HttpServletResponse response = getMockedResponse(stringWriter);
         HttpServletRequest request = getMockedRequest();
         when(request.getParameter("name")).thenReturn(name);
         when(request.getParameter("password")).thenReturn(password);
         when(request.getParameter("email")).thenReturn(email);
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getId()).thenReturn("1");
 
         String CorrectResponse = "{\"status\":\"201\",\"body\":{\"id\":-1,\"name\":" +
             "\"test\",\"email\":\"test@test\"}}";
