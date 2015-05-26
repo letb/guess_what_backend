@@ -18,9 +18,7 @@ public class JsonResponse {
 
     public static JsonObject badJsonResponse (HttpServletResponse response, JsonObject messages, JsonObject bodyObject,
                                               int status, String property, String value) {
-        try { 
-            response.sendError(status);
-        } catch (IOException e) {}
+        response.setStatus(status);
         messages.addProperty(property, value);
         bodyObject.add("messages", messages);
         return JsonResponse.getJsonResponse(status, bodyObject);
