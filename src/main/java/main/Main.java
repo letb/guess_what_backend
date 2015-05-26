@@ -65,7 +65,7 @@ public class Main {
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
         servletContext.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
         servletContext.addServlet(new ServletHolder(signOut), "/api/v1/auth/signout");
-        servletContext.addServlet(new ServletHolder(profile), "/api/v1/profile");
+        servletContext.addServlet(new ServletHolder(profile), "/api/v1/auth/current");
         servletContext.addServlet(new ServletHolder(admin), "/api/v1/admin");
         servletContext.addServlet(new ServletHolder(gameplay), "/gameplay");
         servletContext.addServlet(new ServletHolder(game), "/game.html");
