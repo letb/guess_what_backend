@@ -1,0 +1,4 @@
+<class type='resource.ThreadSettings'>
+    <clientSleepTime>25</clientSleepTime>
+    <serviceSleepTime>100</serviceSleepTime>
+</class>

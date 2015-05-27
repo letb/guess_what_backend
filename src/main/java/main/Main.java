@@ -25,7 +25,7 @@ import javax.servlet.Servlet;
 
 
 public class Main {
-    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
+    static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
         final MessageSystem messageSystem = new MessageSystem();
@@ -42,7 +42,7 @@ public class Main {
         AccountService accountService = new AccountServiceImpl(messageSystem);
         DBService dbService = new DBServiceImpl();
         WebSocketService webSocketService = new WebSocketServiceImpl();
-        GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService);
+        GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService, messageSystem);
 
         Context context = new Context();
         context.add(AccountService.class, accountService);

@@ -1,0 +1,5 @@
+<class type='resource.GameSettings'>
+    <stepTime>100</stepTime>
+    <gameTime>120000</gameTime>
+    <keyword> котик </keyword>
+</class>

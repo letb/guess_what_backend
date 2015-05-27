@@ -7,7 +7,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class ReadXMLFileSAX {
-    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
+    static final Logger logger = LogManager.getLogger(ReadXMLFileSAX.class);
 
     public static Object readXML(String xmlFile) {
         try {

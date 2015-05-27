@@ -1,5 +1,7 @@
 package mechanics;
 
+import messageSystem.Abonent;
+
 public interface GameMechanics {
 
     public void addUser(String user);

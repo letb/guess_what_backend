@@ -9,10 +9,10 @@ import reflection.ReflectionHelper;
 
 
 public class SaxHandler extends DefaultHandler {
+    static final Logger logger = LogManager.getLogger(SaxHandler.class);
     private static String CLASSNAME = "class";
     private String element = null;
     private Object object = null;
-    static final Logger logger = LogManager.getLogger(SaxHandler.class);
 
 
     public void startDocument() throws SAXException {

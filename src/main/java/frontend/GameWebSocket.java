@@ -116,7 +116,7 @@ public class GameWebSocket {
         } catch (Exception e) {
             logger.catching(e);
         }
-        logger.info("onMessage: " + data);
+//        logger.info("onMessage: " + data);
     }
 
 
