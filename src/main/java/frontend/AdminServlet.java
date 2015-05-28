@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 
 public class AdminServlet extends HttpServlet{
-    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
+    static final Logger logger = LogManager.getLogger(AdminServlet.class);
 
 
     private AccountService accountService;

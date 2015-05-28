@@ -1,5 +1,13 @@
 package mechanics;
 
+import messageSystem.Abonent;
+import messageSystem.Address;
+import messageSystem.MessageSystem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import resource.GameSettings;
+import resource.ResourceFactory;
+import resource.ThreadSettings;
 import user.GameUser;
 import webSocketService.WebSocketService;
 import utils.TimeHelper;
@@ -9,26 +17,51 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public final class GameMechanicsImpl implements GameMechanics {
-    private static final int STEP_TIME = 100;
-    // TODO: move to resource factory
-    private static final int gameTime = 1200 * 1000;
-    private static final String keyword = "котик";
+public final class GameMechanicsImpl implements GameMechanics, Runnable, Abonent {
+    static final Logger logger = LogManager.getLogger(GameMechanics.class);
+    private static int stepTime;
+    private static int gameTime;
+    private static String keyword;
+    private static int serviceSleepTime;
 
-    private WebSocketService webSocketService;
+    private final WebSocketService webSocketService;
+    private final MessageSystem messageSystem;
+    private final Address address = new Address();
+
     private Map<String, GameSession> nameToGame = new HashMap<>();
     private Set<GameSession> allSessions = new HashSet<>();
     private String waiter;
     private Boolean isAnswered = false;
 
 
-    public GameMechanicsImpl(WebSocketService webSocketService) {
+    public GameMechanicsImpl(WebSocketService webSocketService, MessageSystem messageSystem) {
+        ResourceFactory resourceFactory = ResourceFactory.instance();
+
+        GameSettings gameSettings = (GameSettings)resourceFactory.getResource("./data/gameSettings");
+        if (gameSettings == null) {
+            gameSettings = new GameSettings();
+        }
+        stepTime = gameSettings.getStepTime();
+        gameTime = gameSettings.getGameTime();
+        keyword = gameSettings.getKeyword();
+
+        ThreadSettings threadSettings = (ThreadSettings)resourceFactory.getResource("./data/threadSettings");
+        if (threadSettings == null) {
+            threadSettings = new ThreadSettings();
+        }
+        serviceSleepTime = threadSettings.getServiceSleepTime();
+
+
+
         this.webSocketService = webSocketService;
+        this.messageSystem = messageSystem;
+        messageSystem.addService(this);
+        messageSystem.getAddressService().registerGameMechanics(this);
     }
 
     // TODO concurrent linkedqueue
     public void addUser(String user) {
-        if (waiter != null) {
+        if (waiter != null && waiter != user) {
             startGame(user);
             waiter = null;
         } else {
@@ -72,10 +105,19 @@ public final class GameMechanicsImpl implements GameMechanics {
         }
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public void run() {
         while (true) {
             gameStep();
-            TimeHelper.sleep(STEP_TIME);
+            messageSystem.execForAbonent(this);
+            try {
+                Thread.sleep(serviceSleepTime);
+            } catch (InterruptedException e) {
+                logger.catching(e);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import dbService.DBService;
 import messageSystem.Abonent;
 import messageSystem.Address;
 import messageSystem.MessageSystem;
+import resource.ResourceFactory;
 import resource.ThreadSettings;
 import user.dataSets.UserDataSet;
 import dbService.DBServiceImpl;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public final class AccountServiceImpl implements AccountService, Abonent, Runnable {
+public final class AccountServiceImpl implements AccountService, Runnable, Abonent {
     private final Map<String, UserDataSet> users = new HashMap<>();
     private final Map<String, UserDataSet> sessions = new HashMap<>();
     private final DBService dbService = new DBServiceImpl();
@@ -21,7 +22,18 @@ public final class AccountServiceImpl implements AccountService, Abonent, Runnab
     private final MessageSystem messageSystem;
     private final Address address = new Address();
 
+    private static int serviceSleepTime;
+
     public AccountServiceImpl(MessageSystem messageSystem) {
+        ResourceFactory resourceFactory = ResourceFactory.instance();
+        ThreadSettings threadSettings = (ThreadSettings)resourceFactory.getResource("./data/threadSettings");
+        if (threadSettings == null) {
+            threadSettings = new ThreadSettings();
+        }
+        serviceSleepTime = threadSettings.getServiceSleepTime();
+
+
+
         this.messageSystem = messageSystem;
         messageSystem.addService(this);
         messageSystem.getAddressService().registerAccountService(this);
@@ -83,7 +95,7 @@ public final class AccountServiceImpl implements AccountService, Abonent, Runnab
         while (true){
             messageSystem.execForAbonent(this);
             try {
-                Thread.sleep(ThreadSettings.SERVICE_SLEEP_TIME);
+                Thread.sleep(serviceSleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

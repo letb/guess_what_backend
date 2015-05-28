@@ -29,6 +29,7 @@ public final class DBServiceImpl implements DBService {
             logger.error("No db settings. I give up");
             System.exit(3);
         }
+
         Configuration configuration = dbSettings.getConfiguration();
         configuration.addAnnotatedClass(UserDataSet.class);
 

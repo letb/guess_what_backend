@@ -28,5 +28,5 @@ release.properties
 
 *~
 
-data/dbSettings.xml
-data/serverSettings.xml
+data/*.xml
+data/*.xml
