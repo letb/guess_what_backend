@@ -1,6 +1,7 @@
 package classesForTests;
 
 import accountService.AccountService;
+import messageSystem.Address;
 import user.dataSets.UserDataSet;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class AccountServiceStubExist implements AccountService {
     private Map<String, UserDataSet> users = new HashMap<>();
     private Map<String, UserDataSet> sessions = new HashMap<>();
+    private Address address;
 
     public boolean addUser(String userName, UserDataSet userDataSet) {
         return false;
@@ -48,4 +50,10 @@ public class AccountServiceStubExist implements AccountService {
         }
         return users;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void run() {}
 }

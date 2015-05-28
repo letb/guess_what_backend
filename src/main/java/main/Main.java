@@ -94,5 +94,7 @@ public class Main {
 
         gameMechanicsThread.start();
         webSocketServiceThread.start();
+
+        server.join();
     }
 }

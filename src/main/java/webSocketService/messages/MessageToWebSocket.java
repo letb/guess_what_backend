@@ -13,7 +13,7 @@ public abstract class MessageToWebSocket extends Message {
 
     @Override
     public void exec(Abonent abonent) {
-        if (abonent instanceof WebSocketGameServlet) {
+        if (abonent instanceof WebSocketService) {
             exec((WebSocketService) abonent);
         }
     }

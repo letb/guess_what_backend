@@ -1,6 +1,7 @@
 package classesForTests;
 
 import accountService.AccountService;
+import messageSystem.Address;
 import user.dataSets.UserDataSet;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class AccountServiceStub implements AccountService {
 
     private Map<String, UserDataSet> users = new HashMap<>();
     private Map<String, UserDataSet> sessions = new HashMap<>();
+    private Address address;
 
     public boolean addUser(String userName, UserDataSet userDataSet) {
         return true;
@@ -43,4 +45,8 @@ public class AccountServiceStub implements AccountService {
     public UserDataSet[] getScoreboard () {
         return new UserDataSet[0];
     }
+
+    public Address getAddress () { return address; }
+
+    public void run () {}
 }

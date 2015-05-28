@@ -91,6 +91,7 @@ public final class GameMechanicsImpl implements GameMechanics {
         nameToGame.put(second, gameSession);
         Address to = messageSystem.getAddressService().getWebSocketService();
 
+        System.out.println("I try to send message");
         messageSystem.sendMessage(new MessageNotifyStartGame(address,
                 to, gameSession.getGameUser(first), gameSession.getKeyword()));
         messageSystem.sendMessage(new MessageNotifyStartGame(address,

@@ -1,6 +1,7 @@
 package frontend;
 
 import main.Context;
+import mechanics.messages.MessageAddUser;
 import mechanics.messages.MessageCheckAnswer;
 import messageSystem.Address;
 import messageSystem.MessageSystem;
@@ -84,6 +85,9 @@ public class GameWebSocket {
     @OnWebSocketConnect
     public void onOpen(Session session) {
         setSession(session);
+        webSocketService.addUser(this);
+        messageSystem.sendMessage(new MessageAddUser(webSocketService.getAddress(),
+                address, myName));
     }
 
     @OnWebSocketMessage
@@ -109,6 +113,8 @@ public class GameWebSocket {
                 }
             } else if (messageObject.get("type").toString().contentEquals("init:desktop")) {
                 webSocketService.addUser(this);
+                messageSystem.sendMessage(new MessageAddUser(webSocketService.getAddress(),
+                        address, myName));
             } else if (messageObject.get("type").toString().contentEquals("init:joystick")) {
                 myDesktopName = myName;
                 myName = myName + "_mobile";
@@ -127,7 +133,6 @@ public class GameWebSocket {
         } catch (Exception e) {
             logger.catching(e);
         }
-//        logger.info("onMessage: " + data);
     }
 
 

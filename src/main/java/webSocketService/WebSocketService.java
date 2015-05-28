@@ -9,7 +9,6 @@ public interface WebSocketService extends Abonent, Runnable {
 
     void addUser(GameWebSocket user);
 
-//    void notifyUserRightAnswer(GameUser user);
     GameWebSocket getUserByName(String name);
 
     void notifyStartGame(GameUser user, String keyword);
