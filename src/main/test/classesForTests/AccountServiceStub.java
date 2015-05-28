@@ -1,7 +1,7 @@
-package tests.classesForTests;
+package classesForTests;
 
-import base.AccountService;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class AccountServiceStub implements AccountService {
         return new UserDataSet("test", "123", "test@test");
     }
 
-    public void addSessions(String sessionId, UserDataSet userDataSet) {
+    public void addSession(String sessionId, UserDataSet userDataSet) {
 
     }
 
@@ -35,4 +35,12 @@ public class AccountServiceStub implements AccountService {
     public String getNumberOfOnlineUsers() { return String.valueOf(sessions.size()); }
 
     public String getNumberOfUsers() { return String.valueOf(users.size()); }
+
+    public String getUserName(String sessionId) {
+        return sessions.get(sessionId).getName();
+    }
+
+    public UserDataSet[] getScoreboard () {
+        return new UserDataSet[0];
+    }
 }

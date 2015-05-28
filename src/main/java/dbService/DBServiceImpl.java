@@ -1,7 +1,6 @@
 package dbService;
 
-import base.DBService;
-import base.dataSets.UserDataSet;
+import user.dataSets.UserDataSet;
 import dbService.dao.UserDataSetDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,24 +13,31 @@ import org.hibernate.service.ServiceRegistry;
 import resource.DBSettings;
 import resource.ResourceFactory;
 
+import java.util.List;
+
 /**
  * Created by ivan on 27.04.15.
  */
-public class DBServiceImpl implements DBService {
+public final class DBServiceImpl implements DBService {
    private SessionFactory sessionFactory;
    static final Logger logger = LogManager.getLogger(DBServiceImpl.class);
 
     public DBServiceImpl() {
         ResourceFactory resourceFactory = ResourceFactory.instance();
-        DBSettings dbSettings = (DBSettings)resourceFactory.getResource("dbSettings");
+        DBSettings dbSettings = (DBSettings)resourceFactory.getResource("./data/dbSettings");
         if(dbSettings == null) {
-            System.out.printf("No db settings. I give up");
+            logger.error("No db settings. I give up");
             System.exit(3);
         }
         Configuration configuration = dbSettings.getConfiguration();
         configuration.addAnnotatedClass(UserDataSet.class);
 
         logger.info("Database service configured");
+        sessionFactory = createSessionFactory(configuration);
+    }
+
+    public DBServiceImpl(Configuration configuration) {
+        configuration.addAnnotatedClass(UserDataSet.class);
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -48,6 +54,12 @@ public class DBServiceImpl implements DBService {
         Session session = sessionFactory.openSession();
         UserDataSetDAO dao = new UserDataSetDAO(session);
         return dao.readByLogin(login);
+    }
+
+    public List getScoreboard() {
+        Session session = sessionFactory.openSession();
+        UserDataSetDAO dao = new UserDataSetDAO(session);
+        return dao.getScoreboard();
     }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {

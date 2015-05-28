@@ -1,8 +1,7 @@
-package tests.frontend;
+package frontend;
 
-import base.AccountService;
-import frontend.AdminServlet;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ public class AdminServletTest {
         when(httpSession.getId()).thenReturn("1");
         when(accountService.getSessions("1")).thenReturn(null);
 
-        String CorrectResponse = "{\"status\":401,\"body\":{\"messages\":{\"user\":\"not admin\"}}}";
+        String CorrectResponse = "{\"status\":\"401\",\"body\":{\"messages\":{\"user\":\"not admin\"}}}";
 
         admin.doGet(request, response);
         assertEquals(CorrectResponse, stringWriter.toString());
@@ -64,7 +63,7 @@ public class AdminServletTest {
         when(httpSession.getId()).thenReturn("2");
         when(accountService.getSessions("2")).thenReturn(new UserDataSet("test", "123", "test@test"));
 
-        String CorrectResponse = "{\"status\":401,\"body\":{\"messages\":{\"user\":\"not admin\"}}}";
+        String CorrectResponse = "{\"status\":\"401\",\"body\":{\"messages\":{\"user\":\"not admin\"}}}";
 
         admin.doGet(request, response);
 
@@ -84,7 +83,7 @@ public class AdminServletTest {
         when(accountService.getNumberOfOnlineUsers()).thenReturn("4");
         when(accountService.getNumberOfUsers()).thenReturn("20");
 
-        String CorrectResponse = "{\"status\":200,\"body\":{\"number_of_users\":\"20\",\"online\":\"4\"}}";
+        String CorrectResponse = "{\"status\":\"200\",\"body\":{\"number_of_users\":\"20\",\"online\":\"4\"}}";
 
         admin.doGet(request, response);
 
@@ -103,7 +102,7 @@ public class AdminServletTest {
         when(httpSession.getId()).thenReturn("3");
         when(accountService.getSessions("3")).thenReturn(new UserDataSet("admin", "123", "admin@admin"));
 
-        String CorrectResponse = "{\"status\":400,\"body\":{\"messages\":{\"timer\":\"use numbers\"}}}";
+        String CorrectResponse = "{\"status\":\"400\",\"body\":{\"messages\":{\"timer\":\"use numbers\"}}}";
 
         admin.doGet(request, response);
 

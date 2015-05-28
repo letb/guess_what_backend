@@ -1,10 +1,10 @@
-package base;
+package mechanics;
 
 public interface GameMechanics {
 
     public void addUser(String user);
 
-//    public void
+    public void checkAnswer(String userName, String word);
 
     public void run();
 }

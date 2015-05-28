@@ -1,9 +1,9 @@
 package frontend;
 
 import com.google.gson.JsonObject;
-import base.AccountService;
+import accountService.AccountService;
 import main.Context;
-import base.dataSets.UserDataSet;
+import user.dataSets.UserDataSet;
 import utils.PageGenerator;
 import utils.JsonResponse;
 
@@ -61,6 +61,7 @@ public class SignUpServlet extends HttpServlet {
             if (accountService.addUser(name, new UserDataSet(name, password, email))) {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 UserDataSet userDataSet = accountService.getUser(name);
+                accountService.addSession(request.getSession().getId(), userDataSet);
                 bodyObject = userDataSet.getJson();
                 outerObject = JsonResponse.getJsonResponse(201, bodyObject);
             } else {

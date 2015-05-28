@@ -1,6 +1,7 @@
-package base;
+package webSocketService;
 
 
+import user.GameUser;
 import frontend.GameWebSocket;
 
 public interface WebSocketService {
@@ -10,7 +11,7 @@ public interface WebSocketService {
 //    void notifyUserRightAnswer(GameUser user);
     GameWebSocket getUserByName(String name);
 
-    void notifyStartGame(GameUser user);
+    void notifyStartGame(GameUser user, String keyword);
 
-    void notifyGameOver(GameUser user, boolean win);
+    void notifyGameOver(GameUser user, boolean win, String keyword);
 }

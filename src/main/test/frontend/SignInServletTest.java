@@ -1,10 +1,9 @@
-package tests.frontend;
+package frontend;
 
-import base.AccountService;
-import frontend.SignInServlet;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 import org.junit.Test;
-import tests.classesForTests.AccountServiceStub;
+import classesForTests.AccountServiceStub;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +16,7 @@ import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+//TODO в стабе менять id пользователей
 public class SignInServletTest {
     AccountService accountService = mock(AccountService.class);
     AccountService accountServiceStub = new AccountServiceStub();
@@ -47,7 +47,7 @@ public class SignInServletTest {
         when(request.getParameter("password")).thenReturn("123");
         when(accountService.getUser("test")).thenReturn(null);
 
-        String CorrectResponse = "{\"status\":401,\"body\":" +
+        String CorrectResponse = "{\"status\":\"401\",\"body\":" +
                 "{\"messages\":{\"user\":\"wrong login or password\"}}}";
 
         SignInServlet signIn = new SignInServlet(accountService);
@@ -68,7 +68,7 @@ public class SignInServletTest {
         when(request.getParameter("name")).thenReturn(name);
         when(request.getParameter("password")).thenReturn(password);
         when(accountService.getUser("test")).thenReturn(new UserDataSet(name, "456", email));
-        String CorrectResponse = "{\"status\":401,\"body\":" +
+        String CorrectResponse = "{\"status\":\"401\",\"body\":" +
                 "{\"messages\":{\"user\":\"wrong login or password\"}}}";
 
         SignInServlet signIn = new SignInServlet(accountService);
@@ -90,8 +90,8 @@ public class SignInServletTest {
         when(request.getParameter("password")).thenReturn(password);
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":200,\"body\":" +
-                "{\"id\":1,\"name\":\"test\",\"email\":\"test@test\"}}";
+        String CorrectResponse = "{\"status\":\"200\",\"body\":" +
+                "{\"id\":-1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
         SignInServlet signIn = new SignInServlet(accountServiceStub);
         signIn.doPost(request, response);

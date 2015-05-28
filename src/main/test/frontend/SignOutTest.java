@@ -1,9 +1,8 @@
 package frontend;
 
 import accountService.AccountService;
-import org.junit.Test;
-import classesForTests.AccountServiceStub;
 import classesForTests.AccountServiceStubExist;
+import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +15,9 @@ import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ProfileServletTest {
-    private AccountService accountService = new AccountServiceStub();
-    private AccountService accountServiceExist = new AccountServiceStubExist();
+public class SignOutTest {
 
+    private AccountService accountServiceExist = new AccountServiceStubExist();
 
     private HttpServletResponse getMockedResponse(StringWriter stringWriter) throws IOException {
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -37,24 +35,7 @@ public class ProfileServletTest {
     }
 
     @Test
-    public void testNotAuthorized() throws Exception {
-        final StringWriter stringWriter = new StringWriter();
-        final HttpSession httpSession = mock(HttpSession.class);
-        HttpServletResponse response = getMockedResponse(stringWriter);
-        HttpServletRequest request = getMockedRequest();
-
-        when(request.getSession()).thenReturn(httpSession);
-        when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":\"401\",\"body\":{\"messages\":{\"user\":\"not authorized\"}}}";
-
-        ProfileServlet profile = new ProfileServlet(accountService);
-        profile.doGet(request, response);
-
-        assertEquals(CorrectResponse, stringWriter.toString());
-    }
-
-    @Test
-    public void testGet() throws Exception {
+    public void testPost() throws Exception {
         final StringWriter stringWriter = new StringWriter();
         final HttpSession httpSession = mock(HttpSession.class);
 
@@ -62,11 +43,11 @@ public class ProfileServletTest {
         HttpServletRequest request = getMockedRequest();
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getId()).thenReturn("1");
-        String CorrectResponse = "{\"status\":\"200\",\"body\"" +
-                ":{\"id\":-1,\"name\":\"test\",\"email\":\"test@test\"}}";
 
-        ProfileServlet profile = new ProfileServlet(accountServiceExist);
-        profile.doGet(request, response);
+        String CorrectResponse = "{\"status\":\"200\",\"body\":{}}";
+
+        SignOutServlet signOutServlet = new SignOutServlet(accountServiceExist);
+        signOutServlet.doGet(request, response);
 
         assertEquals(CorrectResponse, stringWriter.toString());
     }

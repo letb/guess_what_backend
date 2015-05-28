@@ -1,18 +1,14 @@
 package frontend;
 
-import base.AccountService;
-import base.GameMechanics;
-import base.WebSocketService;
+import accountService.AccountService;
+import mechanics.GameMechanics;
+import webSocketService.WebSocketService;
 import main.Context;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class GameWebSocketCreator implements WebSocketCreator {
     static final Logger logger = LogManager.getLogger(GameWebSocketCreator.class);

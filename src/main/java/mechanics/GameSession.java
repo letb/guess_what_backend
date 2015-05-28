@@ -1,6 +1,6 @@
 package mechanics;
 
-import base.GameUser;
+import user.GameUser;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,13 +10,16 @@ public class GameSession {
     private final long startTime;
     private final GameUser first;
     private final GameUser second;
+    private boolean isAnswered;
+    private String keyword;
 
     private Map<String, GameUser> users = new HashMap<>();
 
-    public GameSession(String user1, String user2) {
+    public GameSession(String user1, String user2, String keyword) {
         startTime = new Date().getTime();
         GameUser gameUser1 = new GameUser(user1);
         gameUser1.setEnemyName(user2);
+        gameUser1.setIsLeader();
 
         GameUser gameUser2 = new GameUser(user2);
         gameUser2.setEnemyName(user1);
@@ -26,6 +29,8 @@ public class GameSession {
 
         this.first = gameUser1;
         this.second = gameUser2;
+
+        this.keyword = keyword;
     }
 
     public GameUser getEnemy(String user) {
@@ -33,7 +38,7 @@ public class GameSession {
         return users.get(enemyName);
     }
 
-    public GameUser getSelf (String user) {
+    public GameUser getGameUser (String user) {
         return users.get(user);
     }
 
@@ -50,10 +55,18 @@ public class GameSession {
     }
 
     public boolean isFirstWin() {
-        return first.getMyScore() > second.getMyScore();
+        return first.getAnsweredRight();
     }
 
-    public boolean isDraw() {
-        return first.getMyScore() == second.getMyScore();
+    public boolean isAnsweredRight() {
+        return isAnswered;
+    }
+
+    public void setAnsweredRight() {
+        this.isAnswered = true;
+    }
+
+    public String getKeyword() {
+        return keyword;
     }
 }

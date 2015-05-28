@@ -1,7 +1,7 @@
-package tests.classesForTests;
+package classesForTests;
 
-import base.AccountService;
-import base.dataSets.UserDataSet;
+import accountService.AccountService;
+import user.dataSets.UserDataSet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by ivan on 03.04.15.
  */
-public class AccountServiceStubExist implements AccountService{
+public class AccountServiceStubExist implements AccountService {
     private Map<String, UserDataSet> users = new HashMap<>();
     private Map<String, UserDataSet> sessions = new HashMap<>();
 
@@ -21,7 +21,7 @@ public class AccountServiceStubExist implements AccountService{
         return new UserDataSet("name", "password", "email");
     }
 
-    public void addSessions(String sessionId, UserDataSet userDataSet) {
+    public void addSession(String sessionId, UserDataSet userDataSet) {
         sessions.put(sessionId, userDataSet);
     }
 
@@ -34,4 +34,18 @@ public class AccountServiceStubExist implements AccountService{
     public String getNumberOfOnlineUsers() { return String.valueOf(sessions.size()); }
 
     public String getNumberOfUsers() { return String.valueOf(users.size()); }
+
+    public String getUserName(String sessionId) {
+        return sessions.get(sessionId).getName();
+    }
+
+    public UserDataSet[] getScoreboard () {
+         UserDataSet[] users = new UserDataSet[] {new UserDataSet("first", "1", "first@mail"),
+                new UserDataSet("second", "1", "second@mail"),
+                new UserDataSet("third", "1", "third@mail")};
+        for(int i = 0; i < 3; i++) {
+            users[i].setScore((int)Math.pow(10, 3 - i));
+        }
+        return users;
+    }
 }
