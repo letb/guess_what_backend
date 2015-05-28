@@ -89,16 +89,23 @@ public class GameWebSocket {
             JSONObject messageObject = (JSONObject)new JSONParser().parse(data);
 
             if (messageObject.get("type").toString().contentEquals("chat")) {
+                if (isJoystickExists) {
+                    webSocketService.getUserByName(myDesktopName).session.getRemote().sendString(data);
+                }
                 webSocketService.getUserByName(myName).session.getRemote().sendString(data);
                 webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
-                String enemyName = webSocketService.getUserByName(myDesktopName).enemyName;
+
                 JSONObject bodyObject = (JSONObject)messageObject.get("body");
                 String message = (String)bodyObject.get("message");
-                gameMechanics.checkAnswer(myName, message);
+                if (isJoystickExists) {
+                    gameMechanics.checkAnswer(myDesktopName, message);
+                } else {
+                    gameMechanics.checkAnswer(myName, message);
+                }
             } else if (messageObject.get("type").toString().contentEquals("init:desktop")) {
                 webSocketService.addUser(this);
                 gameMechanics.addUser(myName);
-            } else if (messageObject.get("type").toString().contentEquals("init:mobile")) {
+            } else if (messageObject.get("type").toString().contentEquals("init:joystick")) {
                 myDesktopName = myName;
                 myName = myName + "_mobile";
                 enemyName = webSocketService.getUserByName(myDesktopName).enemyName;
