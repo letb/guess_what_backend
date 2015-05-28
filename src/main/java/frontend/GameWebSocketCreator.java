@@ -10,17 +10,17 @@ import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 
+import java.net.ConnectException;
+
 public class GameWebSocketCreator implements WebSocketCreator {
     static final Logger logger = LogManager.getLogger(GameWebSocketCreator.class);
 
     private AccountService accountService;
-    private GameMechanics gameMechanics;
-    private WebSocketService webSocketService;
+    private Context context;
 
     public GameWebSocketCreator(Context context) {
         this.accountService = (AccountService)context.get(AccountService.class);
-        this.gameMechanics = (GameMechanics)context.get(GameMechanics.class);
-        this.webSocketService = (WebSocketService)context.get(WebSocketService.class);
+        this.context = context;
     }
 
     @Override
@@ -28,6 +28,6 @@ public class GameWebSocketCreator implements WebSocketCreator {
         String sessionId = request.getHttpServletRequest().getSession().getId();
         String name = accountService.getUserName(sessionId);
         logger.info("Socket created");
-        return new GameWebSocket(name, gameMechanics, webSocketService);
+        return new GameWebSocket(name, context);
     }
 }

@@ -1,6 +1,7 @@
 package accountService;
 
 import dbService.DBService;
+import main.Context;
 import messageSystem.Abonent;
 import messageSystem.Address;
 import messageSystem.MessageSystem;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public final class AccountServiceImpl implements AccountService, Runnable, Abonent {
+public final class AccountServiceImpl implements AccountService {
     private final Map<String, UserDataSet> users = new HashMap<>();
     private final Map<String, UserDataSet> sessions = new HashMap<>();
     private final DBService dbService = new DBServiceImpl();
@@ -24,7 +25,7 @@ public final class AccountServiceImpl implements AccountService, Runnable, Abone
 
     private static int serviceSleepTime;
 
-    public AccountServiceImpl(MessageSystem messageSystem) {
+    public AccountServiceImpl(Context context) {
         ResourceFactory resourceFactory = ResourceFactory.instance();
         ThreadSettings threadSettings = (ThreadSettings)resourceFactory.getResource("./data/threadSettings");
         if (threadSettings == null) {
@@ -32,9 +33,7 @@ public final class AccountServiceImpl implements AccountService, Runnable, Abone
         }
         serviceSleepTime = threadSettings.getServiceSleepTime();
 
-
-
-        this.messageSystem = messageSystem;
+        this.messageSystem = (MessageSystem)context.get(MessageSystem.class);
         messageSystem.addService(this);
         messageSystem.getAddressService().registerAccountService(this);
     }

@@ -39,15 +39,16 @@ public class Main {
         int port = serverSettings.getPort();
         logger.info("Starting at port: " + port + '\n');
 
-        AccountService accountService = new AccountServiceImpl(messageSystem);
-        DBService dbService = new DBServiceImpl();
-        WebSocketService webSocketService = new WebSocketServiceImpl();
-        GameMechanics gameMechanics = new GameMechanicsImpl(webSocketService, messageSystem);
-
         Context context = new Context();
+        context.add(MessageSystem.class, messageSystem);
+
+        AccountService accountService = new AccountServiceImpl(context);
         context.add(AccountService.class, accountService);
+        DBService dbService = new DBServiceImpl();
         context.add(DBService.class, dbService);
+        WebSocketService webSocketService = new WebSocketServiceImpl(context);
         context.add(WebSocketService.class, webSocketService);
+        GameMechanics gameMechanics = new GameMechanicsImpl(context);
         context.add(GameMechanics.class, gameMechanics);
 
 
@@ -83,9 +84,15 @@ public class Main {
         Server server = new Server(port);
         server.setHandler(handlers);
 
-            server.start();
-//        server.join();
+        server.start();
 
-        gameMechanics.run();
+        Thread gameMechanicsThread = new Thread(gameMechanics);
+        Thread webSocketServiceThread = new Thread(webSocketService);
+
+        gameMechanicsThread.setDaemon(false);
+        webSocketServiceThread.setDaemon(false);
+
+        gameMechanicsThread.start();
+        webSocketServiceThread.start();
     }
 }

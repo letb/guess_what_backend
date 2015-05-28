@@ -1,6 +1,9 @@
 package frontend;
 
-import mechanics.GameMechanics;
+import main.Context;
+import mechanics.messages.MessageCheckAnswer;
+import messageSystem.Address;
+import messageSystem.MessageSystem;
 import user.GameUser;
 import webSocketService.WebSocketService;
 import org.eclipse.jetty.websocket.api.Session;
@@ -18,21 +21,21 @@ import org.json.simple.parser.JSONParser;
 @WebSocket
 public class GameWebSocket {
     static final Logger logger = LogManager.getLogger(GameWebSocket.class);
-//    private Set<GameWebSocket> users;
     private String myDesktopName;
     private String myName;
     private String enemyName;
     private boolean isLeader = false;
     private boolean isJoystickExists = false;
     private Session session;
-    private GameMechanics gameMechanics;
     private WebSocketService webSocketService;
+    private MessageSystem messageSystem;
+    private Address address;
 
-
-    public GameWebSocket(String myName, GameMechanics gameMechanics, WebSocketService webSocketService) {
+    public GameWebSocket(String myName, Context context) {
         this.myName = myName;
-        this.gameMechanics = gameMechanics;
-        this.webSocketService = webSocketService;
+        this.messageSystem = (MessageSystem) context.get(MessageSystem.class);
+        this.webSocketService = (WebSocketService) context.get(WebSocketService.class);
+        this.address = messageSystem.getAddressService().getGameMechanics();
     }
 
     public String getMyName() {
@@ -98,13 +101,14 @@ public class GameWebSocket {
                 JSONObject bodyObject = (JSONObject)messageObject.get("body");
                 String message = (String)bodyObject.get("message");
                 if (isJoystickExists) {
-                    gameMechanics.checkAnswer(myDesktopName, message);
+                    messageSystem.sendMessage(new MessageCheckAnswer(webSocketService.getAddress(),
+                            address, myDesktopName, message));
                 } else {
-                    gameMechanics.checkAnswer(myName, message);
+                    messageSystem.sendMessage(new MessageCheckAnswer(webSocketService.getAddress(),
+                            address, myName, message));
                 }
             } else if (messageObject.get("type").toString().contentEquals("init:desktop")) {
                 webSocketService.addUser(this);
-                gameMechanics.addUser(myName);
             } else if (messageObject.get("type").toString().contentEquals("init:joystick")) {
                 myDesktopName = myName;
                 myName = myName + "_mobile";
@@ -140,4 +144,7 @@ public class GameWebSocket {
         logger.info("onClose");
     }
 
+    public Address getAddress() {
+        return address;
+    }
 }

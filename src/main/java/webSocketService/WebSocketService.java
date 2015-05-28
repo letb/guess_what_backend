@@ -1,10 +1,11 @@
 package webSocketService;
 
 
+import messageSystem.Abonent;
 import user.GameUser;
 import frontend.GameWebSocket;
 
-public interface WebSocketService {
+public interface WebSocketService extends Abonent, Runnable {
 
     void addUser(GameWebSocket user);
 

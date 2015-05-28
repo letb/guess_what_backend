@@ -7,7 +7,7 @@ import user.dataSets.UserDataSet;
  * Created by ivan on 29.03.15.
  */
 
-public interface AccountService {
+public interface AccountService extends Runnable, Abonent  {
     boolean addUser(String userName, UserDataSet userDataSet);
 
     void addSession(String sessionId, UserDataSet userDataSet);

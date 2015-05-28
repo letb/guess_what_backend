@@ -2,7 +2,7 @@ package mechanics;
 
 import messageSystem.Abonent;
 
-public interface GameMechanics {
+public interface GameMechanics extends  Runnable, Abonent  {
 
     public void addUser(String user);
 
