@@ -1,6 +1,5 @@
 package webSocketService.messages;
 
-    import frontend.WebSocketGameServlet;
     import messageSystem.Abonent;
     import messageSystem.Address;
     import messageSystem.Message;
