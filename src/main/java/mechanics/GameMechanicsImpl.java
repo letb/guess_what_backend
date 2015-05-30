@@ -23,9 +23,7 @@ import java.util.Set;
 
 public final class GameMechanicsImpl implements GameMechanics {
     static final Logger logger = LogManager.getLogger(GameMechanics.class);
-    private static int stepTime;
-    private static int gameTime;
-    private static String keyword;
+    GameSettings gameSettings = new GameSettings();
     private static int serviceSleepTime;
 
     private final MessageSystem messageSystem;
@@ -40,13 +38,10 @@ public final class GameMechanicsImpl implements GameMechanics {
     public GameMechanicsImpl(Context context) {
         ResourceFactory resourceFactory = ResourceFactory.instance();
 
-        GameSettings gameSettings = (GameSettings)resourceFactory.getResource("./data/gameSettings");
+        gameSettings = (GameSettings)resourceFactory.getResource("./data/gameSettings");
         if (gameSettings == null) {
             gameSettings = new GameSettings();
         }
-        stepTime = gameSettings.getStepTime();
-        gameTime = gameSettings.getGameTime();
-        keyword = gameSettings.getKeyword();
 
         ThreadSettings threadSettings = (ThreadSettings)resourceFactory.getResource("./data/threadSettings");
         if (threadSettings == null) {
@@ -84,7 +79,7 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     private void startGame(String first) {
         String second = waiter;
-        GameSession gameSession = new GameSession(first, second, keyword);
+        GameSession gameSession = new GameSession(first, second, gameSettings.getKeyword());
 
         allSessions.add(gameSession);
         nameToGame.put(first, gameSession);
@@ -101,7 +96,7 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     private void gameStep() {
         for (GameSession session : allSessions) {
-            if (session.getSessionTime() >= gameTime || session.isAnsweredRight()) {
+            if (session.getSessionTime() >= gameSettings.getGameTime() || session.isAnsweredRight()) {
                 boolean firstWin = session.isFirstWin();
                 Address to = messageSystem.getAddressService().getWebSocketService();
                 messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getFirst(),

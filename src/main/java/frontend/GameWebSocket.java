@@ -116,11 +116,11 @@ public class GameWebSocket {
                 messageSystem.sendMessage(new MessageAddUser(webSocketService.getAddress(),
                         address, myName));
             } else if (messageObject.get("type").toString().contentEquals("init:joystick")) {
+                webSocketService.addUser(this);
                 myDesktopName = myName;
                 myName = myName + "_mobile";
                 enemyName = webSocketService.getUserByName(myDesktopName).enemyName;
 
-                webSocketService.addUser(this);
                 isJoystickExists = true;
             } else {
                 webSocketService.getUserByName(myName).session.getRemote().sendString(data);

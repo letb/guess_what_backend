@@ -39,28 +39,28 @@ public class Main {
         int port = serverSettings.getPort();
         logger.info("Starting at port: " + port + '\n');
 
-        Context context = new Context();
-        context.add(MessageSystem.class, messageSystem);
+        Context serviceContext = new Context();
+        serviceContext.add(MessageSystem.class, messageSystem);
 
-        AccountService accountService = new AccountServiceImpl(context);
-        context.add(AccountService.class, accountService);
+        AccountService accountService = new AccountServiceImpl(serviceContext);
+        serviceContext.add(AccountService.class, accountService);
         DBService dbService = new DBServiceImpl();
-        context.add(DBService.class, dbService);
-        WebSocketService webSocketService = new WebSocketServiceImpl(context);
-        context.add(WebSocketService.class, webSocketService);
-        GameMechanics gameMechanics = new GameMechanicsImpl(context);
-        context.add(GameMechanics.class, gameMechanics);
+        serviceContext.add(DBService.class, dbService);
+        WebSocketService webSocketService = new WebSocketServiceImpl(serviceContext);
+        serviceContext.add(WebSocketService.class, webSocketService);
+        GameMechanics gameMechanics = new GameMechanicsImpl(serviceContext);
+        serviceContext.add(GameMechanics.class, gameMechanics);
 
 
-        Servlet signin = new SignInServlet(context);
-        Servlet signUp = new SignUpServlet(context);
-        Servlet signOut = new SignOutServlet(context);
-        Servlet profile = new ProfileServlet(context);
-        Servlet admin = new AdminServlet(context);
-        Servlet gameplay = new WebSocketGameServlet(context);
-        Servlet game = new GameServlet(context);
-        Servlet front = new FrontServlet(context);
-        Servlet scoreboard = new ScoreboardServlet(context);
+        Servlet signin = new SignInServlet(serviceContext);
+        Servlet signUp = new SignUpServlet(serviceContext);
+        Servlet signOut = new SignOutServlet(serviceContext);
+        Servlet profile = new ProfileServlet(serviceContext);
+        Servlet admin = new AdminServlet(serviceContext);
+        Servlet gameplay = new WebSocketGameServlet(serviceContext);
+        Servlet game = new GameServlet(serviceContext);
+        Servlet front = new FrontServlet(serviceContext);
+        Servlet scoreboard = new ScoreboardServlet(serviceContext);
 
         ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContext.addServlet(new ServletHolder(signin), "/api/v1/auth/signin");
