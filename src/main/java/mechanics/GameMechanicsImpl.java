@@ -57,7 +57,7 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     // TODO concurrent linkedqueue
     public void addUser(String user) {
-        if (waiter != null && waiter != user) {
+        if (waiter != null && !(waiter.equals(user))) {
             startGame(user);
             waiter = null;
         } else {

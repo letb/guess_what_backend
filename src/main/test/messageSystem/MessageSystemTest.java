@@ -37,7 +37,7 @@ public class MessageSystemTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testSendMessageToNotExistingAbonent() throws Exception {
         AbonentStub abonent1 = new AbonentStub();
         AbonentStub abonent2 = new AbonentStub();

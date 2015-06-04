@@ -85,9 +85,6 @@ public class GameWebSocket {
     @OnWebSocketConnect
     public void onOpen(Session session) {
         setSession(session);
-        webSocketService.addUser(this);
-        messageSystem.sendMessage(new MessageAddUser(webSocketService.getAddress(),
-                address, myName));
     }
 
     @OnWebSocketMessage
