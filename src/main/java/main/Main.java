@@ -4,6 +4,7 @@ import accountService.AccountServiceImpl;
 import dbService.DBService;
 import mechanics.GameMechanics;
 import messageSystem.MessageSystem;
+import resource.Words;
 import webSocketService.WebSocketService;
 import dbService.DBServiceImpl;
 import frontend.*;
@@ -31,7 +32,7 @@ public class Main {
         final MessageSystem messageSystem = new MessageSystem();
         final ResourceFactory resourceFactory = ResourceFactory.instance();
         ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("./data/serverSettings");
-
+        Words words = new Words(resourceFactory.getWords("./data/words"));
 
         if(serverSettings == null) {
             serverSettings = new ServerSettings();
@@ -41,6 +42,7 @@ public class Main {
 
         Context serviceContext = new Context();
         serviceContext.add(MessageSystem.class, messageSystem);
+        serviceContext.add(Words.class, words);
 
         AccountService accountService = new AccountServiceImpl(serviceContext);
         serviceContext.add(AccountService.class, accountService);

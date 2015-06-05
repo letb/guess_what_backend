@@ -27,5 +27,14 @@ public class ResourceFactory {
         return object;
     }
 
+    public String[] getWords(String resourceWay) {
+        if (resourceWay == null) {
+            return null;
+        }
+
+        String[] words = ReadXMLFileSAX.readWords(resourceWay + ".xml");
+        return words;
+    }
+
     private ResourceFactory () {};
 }

@@ -22,4 +22,18 @@ public class ReadXMLFileSAX {
         }
         return null;
     }
+
+    public static String[] readWords(String xmlFile) {
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+
+            SaxHandlerForArray handler = new SaxHandlerForArray();
+            saxParser.parse(xmlFile, handler);
+            return handler.getWords();
+        } catch (Exception e) {
+            logger.info("Error when trying to read file: " + xmlFile + ". Using default settings");
+        }
+        return null;
+    }
 }
