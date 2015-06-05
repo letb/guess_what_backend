@@ -17,10 +17,8 @@ import utils.TimeHelper;
 import webSocketService.messages.MessageNotifyGameOver;
 import webSocketService.messages.MessageNotifyStartGame;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class GameMechanicsImpl implements GameMechanics {
     static final Logger logger = LogManager.getLogger(GameMechanics.class);
@@ -33,7 +31,8 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     private Map<String, GameSession> nameToGame = new HashMap<>();
     private Set<GameSession> allSessions = new HashSet<>();
-    private String waiter;
+    private ConcurrentLinkedQueue<String> waiters = new ConcurrentLinkedQueue<String>();
+
     private Boolean isAnswered = false;
 
 
@@ -53,7 +52,7 @@ public final class GameMechanicsImpl implements GameMechanics {
 
         words = new Words(resourceFactory.getWords("./data/words"));
         if (words == null) {
-            words = new Words(new String[]{"котик", "глаз", "телепузик", "Волошин", "vol-o-sheen"});
+            words = new Words(new String[]{"котик", "телепузик", "глаз", "Волошин", "vol-o-sheen"});
         }
 
 
@@ -64,11 +63,12 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     // TODO concurrent linkedqueue
     public void addUser(String user) {
-        if (waiter != null && !(waiter.equals(user))) {
-            startGame(user);
-            waiter = null;
-        } else {
-            waiter = user;
+        if (!waiters.contains(user)) {
+            waiters.add(user);
+        }
+
+        if (waiters.size() == 4) {
+            startGame(waiters);            // TODO: get from resources
         }
     }
 
@@ -77,6 +77,7 @@ public final class GameMechanicsImpl implements GameMechanics {
         String sessionKeyword = currentGameSession.getKeyword();
         if (word.contentEquals(sessionKeyword)) {
             currentGameSession.setAnsweredRight();
+            currentGameSession.setAnswerer(userName);
 
             GameUser currentUser = currentGameSession.getGameUser(userName);
             currentUser.setAnsweredRight();
@@ -84,32 +85,33 @@ public final class GameMechanicsImpl implements GameMechanics {
     }
 
 
-    private void startGame(String first) {
-        String second = waiter;
-        GameSession gameSession = new GameSession(first, second, words.getWord());
+    private void startGame(ConcurrentLinkedQueue<String> waiters) {
+        GameSession gameSession = new GameSession(waiters, words.getWord());
 
         allSessions.add(gameSession);
-        nameToGame.put(first, gameSession);
-        nameToGame.put(second, gameSession);
+        for (String userName : waiters) {
+            nameToGame.put(userName, gameSession);
+        }
         Address to = messageSystem.getAddressService().getWebSocketService();
 
-        System.out.println("I try to send message");
-        messageSystem.sendMessage(new MessageNotifyStartGame(address,
-                to, gameSession.getGameUser(first), gameSession.getKeyword()));
-        messageSystem.sendMessage(new MessageNotifyStartGame(address,
-                to, gameSession.getGameUser(second), gameSession.getKeyword()));
+        //System.out.println("I try to send message");
+        for (String userName : waiters) {
+            messageSystem.sendMessage(new MessageNotifyStartGame(address,
+                    to, gameSession.getGameUser(userName), gameSession.getKeyword()));
+        }
     }
 
 
     private void gameStep() {
         for (GameSession session : allSessions) {
             if (session.getSessionTime() >= gameSettings.getGameTime() || session.isAnsweredRight()) {
-                boolean firstWin = session.isFirstWin();
                 Address to = messageSystem.getAddressService().getWebSocketService();
-                messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getFirst(),
-                        firstWin, session.getKeyword()));
-                messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getSecond(),
-                        !firstWin, session.getKeyword()));
+
+                for (GameUser gameUser : session.getUsers()) {
+                    messageSystem.sendMessage(new MessageNotifyGameOver(address, to, gameUser,
+                            gameUser.getAnsweredRight(), session.getKeyword()));
+                }
+
                 allSessions.remove(session);
             }
         }

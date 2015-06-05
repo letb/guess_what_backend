@@ -1,8 +1,11 @@
 package user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameUser {
     private final String myName;
-    private String enemyName;
+    private List<String> enemiesNames;
     private boolean isLeader = false;
     private boolean isAnsweredRight = false;
     public GameUser(String myName) {
@@ -13,8 +16,8 @@ public class GameUser {
         return myName;
     }
 
-    public String getEnemyName() {
-        return enemyName;
+    public List<String> getEnemiesNames() {
+        return enemiesNames;
     }
 
     public void setAnsweredRight() {
@@ -25,8 +28,8 @@ public class GameUser {
         return isAnsweredRight;
     }
 
-    public void setEnemyName(String enemyName) {
-        this.enemyName = enemyName;
+    public void setEnemiesNames(List<String> enemiesNames) {
+        this.enemiesNames = enemiesNames;
     }
 
     public boolean getIsLeader() {

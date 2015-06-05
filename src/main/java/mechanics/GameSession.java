@@ -2,40 +2,45 @@ package mechanics;
 
 import user.GameUser;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameSession {
     private final long startTime;
-    private final GameUser first;
-    private final GameUser second;
+    List<GameUser> gameUsers;
+    List<String> userNames;
     private boolean isAnswered;
+    private String answerer;
     private String keyword;
 
     private Map<String, GameUser> users = new HashMap<>();
 
-    public GameSession(String user1, String user2, String keyword) {
+    public GameSession(ConcurrentLinkedQueue<String> waiters, String keyword) {
         startTime = new Date().getTime();
-        GameUser gameUser1 = new GameUser(user1);
-        gameUser1.setEnemyName(user2);
-        gameUser1.setIsLeader();
+        gameUsers = new ArrayList<>();
+        userNames = new ArrayList<>();
 
-        GameUser gameUser2 = new GameUser(user2);
-        gameUser2.setEnemyName(user1);
+        for (int i = 0; i < waiters.size(); ++i) {
+            userNames.add(waiters.poll());
+        }
 
-        users.put(user1, gameUser1);
-        users.put(user2, gameUser2);
+        for (String currUserName: userNames) {
+            GameUser newGameUser = new GameUser(currUserName);
+            gameUsers.add(newGameUser);
+            users.put(currUserName, newGameUser);
+        }
 
-        this.first = gameUser1;
-        this.second = gameUser2;
+        for (GameUser currGameUser: gameUsers) {
+            List<String> enemiesUserNames = new ArrayList<>();
+            enemiesUserNames.remove(currGameUser.getMyName());
+            currGameUser.setEnemiesNames(enemiesUserNames);
+        }
 
         this.keyword = keyword;
     }
 
-    public GameUser getEnemy(String user) {
-        String enemyName = users.get(user).getEnemyName();
-        return users.get(enemyName);
+    public List<String> getEnemies(String user) {
+        return users.get(user).getEnemiesNames();
     }
 
     public GameUser getGameUser (String user) {
@@ -46,17 +51,10 @@ public class GameSession {
         return new Date().getTime() - startTime;
     }
 
-    public GameUser getFirst() {
-        return first;
+    public List<GameUser> getUsers() {
+        return gameUsers;
     }
 
-    public GameUser getSecond() {
-        return second;
-    }
-
-    public boolean isFirstWin() {
-        return first.getAnsweredRight();
-    }
 
     public boolean isAnsweredRight() {
         return isAnswered;
@@ -68,5 +66,13 @@ public class GameSession {
 
     public String getKeyword() {
         return keyword;
+    }
+
+    public void setAnswerer(String user) {
+        answerer = user;
+    }
+
+    public String getAnswerer() {
+        return answerer;
     }
 }

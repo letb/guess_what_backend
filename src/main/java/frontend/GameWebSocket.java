@@ -5,6 +5,7 @@ import mechanics.messages.MessageAddUser;
 import mechanics.messages.MessageCheckAnswer;
 import messageSystem.Address;
 import messageSystem.MessageSystem;
+import org.json.simple.JSONArray;
 import user.GameUser;
 import webSocketService.WebSocketService;
 import org.eclipse.jetty.websocket.api.Session;
@@ -18,13 +19,15 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.util.List;
+
 
 @WebSocket
 public class GameWebSocket {
     static final Logger logger = LogManager.getLogger(GameWebSocket.class);
     private String myDesktopName;
     private String myName;
-    private String enemyName;
+    private List<String> enemiesNames;
     private boolean isLeader = false;
     private boolean isJoystickExists = false;
     private Session session;
@@ -47,10 +50,13 @@ public class GameWebSocket {
         try {
             JSONObject startObject = new JSONObject();
             JSONObject bodyObject = new JSONObject();
-            enemyName = user.getEnemyName();
+            JSONArray players = new JSONArray();
+            enemiesNames = user.getEnemiesNames();
+            players.addAll(enemiesNames);
+
             isLeader = user.getIsLeader();
 
-            bodyObject.put("enemy", enemyName);
+            bodyObject.put("players", players);
             bodyObject.put("leader", isLeader);
             if (isLeader)
                 bodyObject.put("keyword", keyword);
@@ -97,7 +103,9 @@ public class GameWebSocket {
                     webSocketService.getUserByName(myDesktopName).session.getRemote().sendString(data);
                 }
                 webSocketService.getUserByName(myName).session.getRemote().sendString(data);
-                webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+                for (String playerName : enemiesNames) {
+                    webSocketService.getUserByName(playerName).session.getRemote().sendString(data);
+                }
 
                 JSONObject bodyObject = (JSONObject)messageObject.get("body");
                 String message = (String)bodyObject.get("message");
@@ -116,12 +124,14 @@ public class GameWebSocket {
                 webSocketService.addUser(this);
                 myDesktopName = myName;
                 myName = myName + "_mobile";
-                enemyName = webSocketService.getUserByName(myDesktopName).enemyName;
+                enemiesNames = webSocketService.getUserByName(myDesktopName).enemiesNames;
 
                 isJoystickExists = true;
             } else {
                 webSocketService.getUserByName(myName).session.getRemote().sendString(data);
-                webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
+                for (String playerName : enemiesNames) {
+                    webSocketService.getUserByName(playerName).session.getRemote().sendString(data);
+                }
                 if (isJoystickExists)
                     webSocketService.getUserByName(myDesktopName).session.getRemote().sendString(data);
 
