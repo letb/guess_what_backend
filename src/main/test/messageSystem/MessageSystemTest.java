@@ -44,6 +44,7 @@ public class MessageSystemTest {
         messageSystem.addService(abonent1);
         assertEquals(false, abonent2.getExecuted());
 
+
         messageSystem.sendMessage(new MessageCallAbonent(abonent1.getAddress(), abonent2.getAddress()));
         assertEquals(false, abonent2.getExecuted());
     }

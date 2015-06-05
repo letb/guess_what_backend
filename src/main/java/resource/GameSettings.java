@@ -11,7 +11,6 @@ public class GameSettings implements Serializable {
     public GameSettings() {
         this.stepTime = 4100;
         this.gameTime = 4120_000;
-        this.keyword = "некотик";
     }
 
     public int getStepTime() {
@@ -20,9 +19,5 @@ public class GameSettings implements Serializable {
 
     public int getGameTime() {
         return gameTime;
-    }
-
-    public String getKeyword() {
-        return keyword;
     }
 }

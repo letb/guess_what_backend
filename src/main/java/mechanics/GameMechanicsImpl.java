@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import resource.GameSettings;
 import resource.ResourceFactory;
 import resource.ThreadSettings;
+import resource.Words;
 import user.GameUser;
 import webSocketService.WebSocketService;
 import utils.TimeHelper;
@@ -23,7 +24,8 @@ import java.util.Set;
 
 public final class GameMechanicsImpl implements GameMechanics {
     static final Logger logger = LogManager.getLogger(GameMechanics.class);
-    GameSettings gameSettings = new GameSettings();
+    private GameSettings gameSettings;
+    private Words words;
     private static int serviceSleepTime;
 
     private final MessageSystem messageSystem;
@@ -48,6 +50,11 @@ public final class GameMechanicsImpl implements GameMechanics {
             threadSettings = new ThreadSettings();
         }
         serviceSleepTime = threadSettings.getServiceSleepTime();
+
+        words = new Words(resourceFactory.getWords("./data/words"));
+        if (words == null) {
+            words = new Words(new String[]{"котик", "глаз", "телепузик", "Волошин", "vol-o-sheen"});
+        }
 
 
         this.messageSystem = (MessageSystem) context.get(MessageSystem.class);
@@ -79,7 +86,7 @@ public final class GameMechanicsImpl implements GameMechanics {
 
     private void startGame(String first) {
         String second = waiter;
-        GameSession gameSession = new GameSession(first, second, gameSettings.getKeyword());
+        GameSession gameSession = new GameSession(first, second, words.getWord());
 
         allSessions.add(gameSession);
         nameToGame.put(first, gameSession);

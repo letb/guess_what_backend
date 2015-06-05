@@ -32,7 +32,7 @@ public class Main {
         final MessageSystem messageSystem = new MessageSystem();
         final ResourceFactory resourceFactory = ResourceFactory.instance();
         ServerSettings serverSettings = (ServerSettings)resourceFactory.getResource("./data/serverSettings");
-        Words words = new Words(resourceFactory.getWords("./data/words"));
+
 
         if(serverSettings == null) {
             serverSettings = new ServerSettings();
@@ -41,9 +41,8 @@ public class Main {
         logger.info("Starting at port: " + port + '\n');
 
         Context serviceContext = new Context();
-        serviceContext.add(MessageSystem.class, messageSystem);
-        serviceContext.add(Words.class, words);
 
+        serviceContext.add(MessageSystem.class, messageSystem);
         AccountService accountService = new AccountServiceImpl(serviceContext);
         serviceContext.add(AccountService.class, accountService);
         DBService dbService = new DBServiceImpl();
