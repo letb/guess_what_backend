@@ -89,10 +89,11 @@ public class GameWebSocket {
 
             bodyObject.put("message", "your enemy leave");
 
-            overObject.put("type", "disconect");
+            overObject.put("type", "disconnect");
             overObject.put("body", bodyObject);
 
-            session.getRemote().sendString(overObject.toJSONString());
+
+            webSocketService.getUserByName(enemyName).session.getRemote().sendString(overObject.toString());
         } catch (Exception e) {
             logger.catching(e);
         }
@@ -140,9 +141,7 @@ public class GameWebSocket {
                 webSocketService.getUserByName(enemyName).session.getRemote().sendString(data);
                 if (isJoystickExists)
                     webSocketService.getUserByName(myDesktopName).session.getRemote().sendString(data);
-
             }
-
         } catch (Exception e) {
             logger.catching(e);
         }
