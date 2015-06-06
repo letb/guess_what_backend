@@ -57,6 +57,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 
 
     public void notifyStartGame(GameUser user, String keyword) {
+        System.out.println(user.getMyName());
         GameWebSocket gameWebSocket = userSockets.get(user.getMyName());
         gameWebSocket.startGame(user, keyword);
     }

@@ -19,17 +19,23 @@ public class GameSession {
         startTime = new Date().getTime();
         gameUsers = new ArrayList<>();
         userNames = new ArrayList<>();
+        System.out.println("waiters size: " + waiters.size());
 
-        for (int i = 0; i < waiters.size(); ++i) {
-            userNames.add(waiters.poll());
+        int i = 0;
+        while (!waiters.isEmpty()) {
+            String tmp = waiters.poll();
+            if (tmp != null)
+                userNames.add(tmp);
         }
+
+        System.out.println("userNames size: " + userNames.size());
 
         for (String currUserName: userNames) {
             GameUser newGameUser = new GameUser(currUserName);
             gameUsers.add(newGameUser);
             users.put(currUserName, newGameUser);
         }
-
+        System.out.println("users size: " + users.size());
         for (GameUser currGameUser: gameUsers) {
             List<String> enemiesUserNames = new ArrayList<>();
             enemiesUserNames.remove(currGameUser.getMyName());
