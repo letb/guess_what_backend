@@ -86,4 +86,6 @@ public class UserDataSet implements Serializable {
         jsonObject.addProperty("email", this.getEmail());
         return jsonObject;
     }
+
+    public void increaseScoreOnValue(int value) { score += value; }
 }

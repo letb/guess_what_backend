@@ -109,7 +109,7 @@ public final class GameMechanicsImpl implements GameMechanics {
                 messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getFirst(),
                         firstWin, session.getKeyword()));
                 messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getSecond(),
-                        !firstWin, session.getKeyword()));
+                        firstWin, session.getKeyword()));
                 allSessions.remove(session);
             }
         }
