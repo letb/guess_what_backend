@@ -17,10 +17,7 @@ import utils.TimeHelper;
 import webSocketService.messages.MessageNotifyGameOver;
 import webSocketService.messages.MessageNotifyStartGame;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public final class GameMechanicsImpl implements GameMechanics {
     static final Logger logger = LogManager.getLogger(GameMechanics.class);
@@ -77,9 +74,12 @@ public final class GameMechanicsImpl implements GameMechanics {
         String sessionKeyword = currentGameSession.getKeyword();
         if (word.contentEquals(sessionKeyword)) {
             currentGameSession.setAnsweredRight();
+            List<GameUser> users = currentGameSession.getUsers();
+            Address to = messageSystem.getAddressService().getWebSocketService();
 
-            GameUser currentUser = currentGameSession.getGameUser(userName);
-            currentUser.setAnsweredRight();
+            for (GameUser gameUser : users) {
+                gameUser.setAnsweredRight();
+            }
         }
     }
 

@@ -2,9 +2,7 @@ package mechanics;
 
 import user.GameUser;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameSession {
     private final long startTime;
@@ -69,4 +67,12 @@ public class GameSession {
     public String getKeyword() {
         return keyword;
     }
+
+    public List<GameUser> getUsers() {
+        List<GameUser> users = new ArrayList<GameUser>();
+        users.add(first);
+        users.add(second);
+        return users;
+    }
+
 }
