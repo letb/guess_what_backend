@@ -1,5 +1,7 @@
 package mechanics;
 
+import accountService.AccountService;
+import dbService.DBService;
 import main.Context;
 import messageSystem.Abonent;
 import messageSystem.Address;
@@ -12,6 +14,7 @@ import resource.ResourceFactory;
 import resource.ThreadSettings;
 import resource.Words;
 import user.GameUser;
+import user.dataSets.UserDataSet;
 import webSocketService.WebSocketService;
 import utils.TimeHelper;
 import webSocketService.messages.MessageNotifyGameOver;
@@ -32,6 +35,8 @@ public final class GameMechanicsImpl implements GameMechanics {
     private Set<GameSession> allSessions = new HashSet<>();
     private String waiter;
     private Boolean isAnswered = false;
+    private DBService dbService;
+    private AccountService accountService;
 
 
     public GameMechanicsImpl(Context context) {
@@ -57,6 +62,9 @@ public final class GameMechanicsImpl implements GameMechanics {
         this.messageSystem = (MessageSystem) context.get(MessageSystem.class);
         messageSystem.addService(this);
         messageSystem.getAddressService().registerGameMechanics(this);
+
+        dbService = (DBService) context.get(DBService.class);
+        accountService = (AccountService) context.get(AccountService.class)
     }
 
     // TODO concurrent linkedqueue
@@ -75,7 +83,6 @@ public final class GameMechanicsImpl implements GameMechanics {
         if (word.contentEquals(sessionKeyword)) {
             currentGameSession.setAnsweredRight();
             List<GameUser> users = currentGameSession.getUsers();
-            Address to = messageSystem.getAddressService().getWebSocketService();
 
             for (GameUser gameUser : users) {
                 gameUser.setAnsweredRight();
@@ -105,6 +112,15 @@ public final class GameMechanicsImpl implements GameMechanics {
         for (GameSession session : allSessions) {
             if (session.getSessionTime() >= gameSettings.getGameTime() || session.isAnsweredRight()) {
                 boolean firstWin = session.isFirstWin();
+
+                UserDataSet first = accountService.getUser(session.getFirst().getMyName());
+                first.increaseScoreOnValue(5);
+                dbService.update(first);
+
+                UserDataSet second = accountService.getUser(session.getSecond().getMyName());
+                second.increaseScoreOnValue(5);
+                dbService.update(second);
+
                 Address to = messageSystem.getAddressService().getWebSocketService();
                 messageSystem.sendMessage(new MessageNotifyGameOver(address, to, session.getFirst(),
                         firstWin, session.getKeyword()));

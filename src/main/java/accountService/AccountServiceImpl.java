@@ -46,6 +46,10 @@ public final class AccountServiceImpl implements AccountService {
         return true;
     }
 
+    public void updateScore(UserDataSet userDataSet) {
+        dbService.update(userDataSet);
+    }
+
     public void addSession(String sessionId, UserDataSet userDataSet) {
         sessions.put(sessionId, userDataSet);
     }

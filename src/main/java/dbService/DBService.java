@@ -13,4 +13,6 @@ public interface DBService {
     UserDataSet readByLogin(String login);
 
     List getScoreboard();
+
+    void update(UserDataSet dataSet);
 }
