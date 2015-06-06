@@ -23,7 +23,7 @@ public class WebSocketGameServlet extends WebSocketServlet {
     public void configure(WebSocketServletFactory factory) {
         factory.getPolicy().setIdleTimeout(IDLE_TIME);
         factory.setCreator(new GameWebSocketCreator(context));
-        logger.info("Socket servlet configured");
+//        logger.info("Socket servlet configured");
     }
 
 }

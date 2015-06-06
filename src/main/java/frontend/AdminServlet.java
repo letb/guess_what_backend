@@ -48,9 +48,9 @@ public class AdminServlet extends HttpServlet{
                 if (timeString != null) {
                     try {
                         int timeMS = Integer.valueOf(timeString);
-                        logger.info("Server will be down after: " + timeMS + " ms");
+//                        logger.info("Server will be down after: " + timeMS + " ms");
                         TimeHelper.sleep(timeMS);
-                        logger.info("\nShutdown");
+//                        logger.info("\nShutdown");
                         System.exit(0);
                     } catch (NumberFormatException e) {
                         outerObject = JsonResponse.badJsonResponse(response, messages, bodyObject,

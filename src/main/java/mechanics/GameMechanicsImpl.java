@@ -80,7 +80,7 @@ public final class GameMechanicsImpl implements GameMechanics {
     public void checkAnswer(String userName, String word) {
         GameSession currentGameSession = nameToGame.get(userName);
         String sessionKeyword = currentGameSession.getKeyword();
-        if (word.contentEquals(sessionKeyword)) {
+        if (word.toLowerCase().trim().contentEquals(sessionKeyword.toLowerCase().trim())) {
             currentGameSession.setAnsweredRight();
             List<GameUser> users = currentGameSession.getUsers();
 

@@ -59,7 +59,7 @@ public class GameWebSocket {
             startObject.put("body", bodyObject);
 
             session.getRemote().sendString(startObject.toJSONString());
-            logger.info(startObject.toJSONString());
+//            logger.info(startObject.toJSONString());
         } catch (Exception e) {
             logger.catching(e);
         }
@@ -161,8 +161,8 @@ public class GameWebSocket {
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
-        gameOverByDisconnect();
-        logger.info("onClose");
+//        gameOverByDisconnect();
+//        logger.info("onClose");
     }
 
     public Address getAddress() {

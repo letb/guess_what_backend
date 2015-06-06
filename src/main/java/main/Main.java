@@ -38,7 +38,7 @@ public class Main {
             serverSettings = new ServerSettings();
         }
         int port = serverSettings.getPort();
-        logger.info("Starting at port: " + port + '\n');
+//        logger.info("Starting at port: " + port + '\n');
 
         Context serviceContext = new Context();
 

@@ -33,7 +33,7 @@ public final class DBServiceImpl implements DBService {
         Configuration configuration = dbSettings.getConfiguration();
         configuration.addAnnotatedClass(UserDataSet.class);
 
-        logger.info("Database service configured");
+//        logger.info("Database service configured");
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -48,7 +48,7 @@ public final class DBServiceImpl implements DBService {
         UserDataSetDAO dao = new UserDataSetDAO(session);
         dao.save(dataSet);
         transaction.commit();
-        logger.info("Session created");
+//        logger.info("Session created");
     }
 
     public void update(UserDataSet dataSet) {
@@ -57,7 +57,7 @@ public final class DBServiceImpl implements DBService {
         UserDataSetDAO dao = new UserDataSetDAO(session);
         dao.update(dataSet);
         transaction.commit();
-        logger.info("Session created");
+//        logger.info("Session created");
     }
 
     public UserDataSet readByLogin(String login) {

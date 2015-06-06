@@ -19,11 +19,11 @@ public class SaxHandlerForArray extends DefaultHandler {
 
 
     public void startDocument() throws SAXException {
-        logger.info("Start document");
+//        logger.info("Start document");
     }
 
     public void endDocument() throws SAXException {
-        logger.info("End document ");
+  //      logger.info("End document ");
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -31,7 +31,7 @@ public class SaxHandlerForArray extends DefaultHandler {
             element = qName;
         } else {
             String className = attributes.getValue(0);
-            logger.info("Class name: " + className);
+    //        logger.info("Class name: " + className);
         }
     }
 
@@ -42,7 +42,7 @@ public class SaxHandlerForArray extends DefaultHandler {
     public void characters(char ch[], int start, int length) throws SAXException {
         if(element != null){
             String value = new String(ch, start, length);
-            logger.info(element + " = " + value);
+      //      logger.info(element + " = " + value);
             words.add(value);
         }
     }
