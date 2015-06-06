@@ -61,15 +61,14 @@ public final class GameMechanicsImpl implements GameMechanics {
         messageSystem.getAddressService().registerGameMechanics(this);
     }
 
+    // TODO concurrent linkedqueue
     public void addUser(String user) {
         if (!waiters.contains(user)) {
             waiters.add(user);
         }
 
-        if (waiters.size() == 2) {
-            startGame(waiters);    // TODO: get from resources
-            System.out.println("Starting game");
-            waiters.clear(); // TODO: ??
+        if (waiters.size() == 4) {
+            startGame(waiters);            // TODO: get from resources
         }
     }
 
@@ -95,7 +94,7 @@ public final class GameMechanicsImpl implements GameMechanics {
         }
         Address to = messageSystem.getAddressService().getWebSocketService();
 
-        System.out.println("I try to send message");
+        //System.out.println("I try to send message");
         for (String userName : waiters) {
             messageSystem.sendMessage(new MessageNotifyStartGame(address,
                     to, gameSession.getGameUser(userName), gameSession.getKeyword()));
