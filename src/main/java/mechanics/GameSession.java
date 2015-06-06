@@ -20,8 +20,10 @@ public class GameSession {
         gameUsers = new ArrayList<>();
         userNames = new ArrayList<>();
 
-        for (int i = 0; i < waiters.size(); ++i) {
-            userNames.add(waiters.poll());
+        while (!waiters.isEmpty()) {
+            String waiter = waiters.poll();
+            if (waiter != null)
+                userNames.add(waiter);
         }
 
         for (String currUserName: userNames) {

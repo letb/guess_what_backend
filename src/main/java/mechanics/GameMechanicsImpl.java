@@ -67,8 +67,9 @@ public final class GameMechanicsImpl implements GameMechanics {
             waiters.add(user);
         }
 
-        if (waiters.size() == 4) {
-            startGame(waiters);            // TODO: get from resources
+        if (waiters.size() == 2) {
+            startGame(waiters);    // TODO: get from resources
+            waiters.clear(); // TODO: ??
         }
     }
 
