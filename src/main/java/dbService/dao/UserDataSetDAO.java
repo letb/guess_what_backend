@@ -52,4 +52,10 @@ public class UserDataSetDAO {
         }
         return resultList;
     }
+
+    public void update(UserDataSet dataSet) {
+        session.update(dataSet);
+        session.flush();
+        session.close();
+    }
 }

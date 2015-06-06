@@ -51,6 +51,15 @@ public final class DBServiceImpl implements DBService {
         logger.info("Session created");
     }
 
+    public void update(UserDataSet dataSet) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        UserDataSetDAO dao = new UserDataSetDAO(session);
+        dao.update(dataSet);
+        transaction.commit();
+        logger.info("Session created");
+    }
+
     public UserDataSet readByLogin(String login) {
         Session session = sessionFactory.openSession();
         UserDataSetDAO dao = new UserDataSetDAO(session);
