@@ -82,6 +82,22 @@ public class GameWebSocket {
         }
     }
 
+    public void gameOverByDisconnect() {
+        try {
+            JSONObject overObject = new JSONObject();
+            JSONObject bodyObject = new JSONObject();
+
+            bodyObject.put("message", "your enemy leave");
+
+            overObject.put("type", "disconect");
+            overObject.put("body", bodyObject);
+
+            session.getRemote().sendString(overObject.toJSONString());
+        } catch (Exception e) {
+            logger.catching(e);
+        }
+    }
+
     @OnWebSocketConnect
     public void onOpen(Session session) {
         setSession(session);
@@ -143,6 +159,7 @@ public class GameWebSocket {
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
+        gameOverByDisconnect();
         logger.info("onClose");
     }
 
