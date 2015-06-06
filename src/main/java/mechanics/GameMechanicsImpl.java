@@ -64,7 +64,7 @@ public final class GameMechanicsImpl implements GameMechanics {
         messageSystem.getAddressService().registerGameMechanics(this);
 
         dbService = (DBService) context.get(DBService.class);
-        accountService = (AccountService) context.get(AccountService.class)
+        accountService = (AccountService) context.get(AccountService.class);
     }
 
     // TODO concurrent linkedqueue
