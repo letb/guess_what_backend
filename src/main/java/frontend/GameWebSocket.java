@@ -92,8 +92,11 @@ public class GameWebSocket {
             overObject.put("type", "disconnect");
             overObject.put("body", bodyObject);
 
+            try {
+                webSocketService.getUserByName(enemyName).session.getRemote().sendString(overObject.toString());
+            } catch(NullPointerException e) {
 
-            webSocketService.getUserByName(enemyName).session.getRemote().sendString(overObject.toString());
+            }
         } catch (Exception e) {
             logger.catching(e);
         }

@@ -5,6 +5,7 @@ import main.Context;
 import messageSystem.Abonent;
 import messageSystem.Address;
 import messageSystem.MessageSystem;
+import org.eclipse.jetty.security.MappedLoginService;
 import resource.ResourceFactory;
 import resource.ThreadSettings;
 import user.dataSets.UserDataSet;
@@ -70,7 +71,11 @@ public final class AccountServiceImpl implements AccountService {
     }
 
     public String getUserName(String sessionId) {
-        return sessions.get(sessionId).getName();
+        try {
+            return sessions.get(sessionId).getName();
+        } catch (NullPointerException e) {
+            return "Anonymous";
+        }
     }
 
     public UserDataSet removeSessions(String sessionId) { return sessions.remove(sessionId); }
