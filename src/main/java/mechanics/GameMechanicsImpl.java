@@ -68,8 +68,15 @@ public final class GameMechanicsImpl implements GameMechanics {
         }
 
         if (waiters.size() == 2) {
-            startGame(waiters);    // TODO: get from resources
-            waiters.clear(); // TODO: ??
+            System.out.println("I try to start game");
+            ArrayList<String> arrayWaiters = new ArrayList<>();
+            while (!waiters.isEmpty()) {
+                String userName = waiters.poll();
+                if (userName != null)
+                    arrayWaiters.add(userName);
+            }
+            startGame(arrayWaiters);    // TODO: get from resources
+            //waiters.clear(); // TODO: ??
         }
     }
 
@@ -86,7 +93,7 @@ public final class GameMechanicsImpl implements GameMechanics {
     }
 
 
-    private void startGame(ConcurrentLinkedQueue<String> waiters) {
+    private void startGame(ArrayList<String> waiters) {
         GameSession gameSession = new GameSession(waiters, words.getWord());
 
         allSessions.add(gameSession);
@@ -95,8 +102,10 @@ public final class GameMechanicsImpl implements GameMechanics {
         }
         Address to = messageSystem.getAddressService().getWebSocketService();
 
-        //System.out.println("I try to send message");
+        System.out.println("I try to send message");
+        System.out.println("users number: " + waiters.size());
         for (String userName : waiters) {
+            System.out.println("Notify start " + userName);
             messageSystem.sendMessage(new MessageNotifyStartGame(address,
                     to, gameSession.getGameUser(userName), gameSession.getKeyword()));
         }

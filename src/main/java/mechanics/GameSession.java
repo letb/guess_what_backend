@@ -15,15 +15,13 @@ public class GameSession {
 
     private Map<String, GameUser> users = new HashMap<>();
 
-    public GameSession(ConcurrentLinkedQueue<String> waiters, String keyword) {
+    public GameSession(ArrayList<String> waiters, String keyword) {
         startTime = new Date().getTime();
         gameUsers = new ArrayList<>();
         userNames = new ArrayList<>();
 
-        while (!waiters.isEmpty()) {
-            String waiter = waiters.poll();
-            if (waiter != null)
-                userNames.add(waiter);
+        for (String userName : waiters) {
+                userNames.add(userName);
         }
 
         for (String currUserName: userNames) {
